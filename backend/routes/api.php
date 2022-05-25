@@ -28,6 +28,7 @@ Route::post('auth/register', [AuthenticationController::class, 'register']);
 
 // Route::apiResource('news', NewsController::class);
 Route::get('news', [NewsController::class, 'all']);
+Route::get('news/{slug}', [NewsController::class, 'show']);
 Route::get('news/newest', [NewsController::class, 'newest']);
 Route::get('related-links', [RelatedLinkController::class, 'active']);
 Route::get('legislator/member', [LegislatorController::class, 'member']);

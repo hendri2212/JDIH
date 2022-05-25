@@ -20,8 +20,9 @@ class NewsController extends Controller
         return new NewsCollection(NewsResource::collection($news));
     }
 
-    public function show($id)
+    public function show($slug)
     {
-        //
+        $news = News::where('slug', $slug)->first();
+        return new NewsResource($news);
     }
 }
