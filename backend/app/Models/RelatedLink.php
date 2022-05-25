@@ -5,7 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Regulation extends Model
+class RelatedLink extends Model
 {
     use HasFactory;
+
+    protected $primaryKey = "id_related_link";
 }

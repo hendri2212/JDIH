@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSkpdTable extends Migration
+class UpdateRelatedLinksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,8 @@ class CreateSkpdTable extends Migration
      */
     public function up()
     {
-        Schema::create('skpd', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->string('name')->unique();
-            $table->timestamps();
+        Schema::table('related_links', function($table){
+            $table->string('title')->after('id_related_link');
         });
     }
 
@@ -27,6 +25,8 @@ class CreateSkpdTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('skpd');
+        Schema::table('related_links', function($table){
+            $table->dropColumn('title');
+        });
     }
 }

@@ -5,8 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Skpd extends Model
+class Aspiration extends Model
 {
     use HasFactory;
-    protected $table = "skpd";
+
+    protected $primaryKey = "id_aspiration";
 }
