@@ -1,37 +1,55 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from '@/components/HelloWorld.vue'
+// import HelloWorld from '@/components/HelloWorld.vue'
+import Header from '@/components/Header.vue'
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+    <!-- <header>
+        <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+        <div class="wrapper">
+            <HelloWorld msg="You did it!" />
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+            <nav>
+            <RouterLink to="/">Home</RouterLink>
+            <RouterLink to="/about">About</RouterLink>
+            </nav>
+        </div>
+    </header> -->
+    <Header />
+    <RouterView />
 </template>
 
 <style>
 @import '@/assets/base.css';
 
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+    /* max-width: 1280px; */
+    max-width: 460px;
+    margin: 0 auto;
+    /* padding: 2rem; */
 
-  font-weight: normal;
+    /* font-weight: normal; */
+    /* background-color: bisque; */
 }
 
-header {
+.carousel-caption {
+    position: inherit;
+    right: 0%;
+    left: 0%;
+    padding: 2rem 0;
+    color: black;
+}
+
+.card {
+    margin-right: 10px;
+}
+
+.col-3 {
+    padding-right: 0px;
+}
+
+/* header {
   line-height: 1.5;
   max-height: 100vh;
 }
@@ -41,8 +59,7 @@ header {
   margin: 0 auto 2rem;
 }
 
-a,
-.green {
+a, .green {
   text-decoration: none;
   color: hsla(160, 100%, 37%, 1);
   transition: 0.4s;
@@ -77,9 +94,9 @@ nav a {
 
 nav a:first-of-type {
   border: 0;
-}
+} */
 
-@media (min-width: 1024px) {
+/* @media (min-width: 1024px) {
   body {
     display: flex;
     place-items: center;
@@ -115,5 +132,5 @@ nav a:first-of-type {
     padding: 1rem 0;
     margin-top: 1rem;
   }
-}
+} */
 </style>
