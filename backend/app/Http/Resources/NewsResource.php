@@ -17,10 +17,13 @@ class NewsResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id_news,
             'slug' => $this->slug,
             'title' => $this->title,
+            'photo' => $this->photo,
             'content' => $this->content,
-            'author' => new AuthorResource($this->author)
+            'author' => new AuthorResource($this->author),
+            'created_at' => $this->created_at
         ];
     }
 }

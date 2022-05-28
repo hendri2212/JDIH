@@ -18,6 +18,7 @@ class CreateWorkPlansTable extends Migration
             $table->string('title');
             $table->text('content');
             $table->string('slug');
+            $table->timestamps();
             $table->unsignedBigInteger('id_user');
             $table->foreign('id_user')->references('id_user')->on('users');
         });

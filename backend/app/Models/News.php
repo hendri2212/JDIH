@@ -22,15 +22,17 @@ class News extends Model
 
     private function createSlug($title){
         if (static::whereSlug($slug = Str::slug($title))->exists()) {
-            $max = static::whereTitle($title)->latest('id')->skip(1)->value('slug');
-  
-            if (is_numeric($max[-1])) {
-                return preg_replace_callback('/(\d+)$/', function ($mathces) {
-                    return $mathces[1] + 1;
-                }, $max);
+            $max = static::whereTitle($title)->latest('id_news')->skip(1)->value('slug');
+            if($max != null) {
+                if (is_numeric($max[-1])) {
+                    return preg_replace_callback('/(\d+)$/', function ($mathces) {
+                        return $mathces[1] + 1;
+                    }, $max);
+                }
+      
+                return "{$slug}-2";
             }
-  
-            return "{$slug}-2";
+            return $slug;
         }
   
         return $slug;

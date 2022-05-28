@@ -10,19 +10,22 @@ use App\Models\News;
 class NewsController extends Controller
 {
     public function all(){
-        $news = News::paginate();
-        return new NewsCollection(NewsResource::collection($news));
+        $news = News::where('is_published', true)->orderBy('created_at', 'desc')->paginate();
+        return new NewsCollection($news);
     }
 
     public function newest()
     {
-        $news = News::all()->take(5);
-        return new NewsCollection(NewsResource::collection($news));
+        $news = News::where('is_published', true)->orderBy('created_at', 'desc')->get()->take(5);
+        return new NewsCollection($news);
     }
 
     public function show($slug)
     {
-        $news = News::where('slug', $slug)->first();
+        $news = News::where([
+            'is_published' => true,
+            'slug' => $slug
+        ])->first();
         return new NewsResource($news);
     }
 }

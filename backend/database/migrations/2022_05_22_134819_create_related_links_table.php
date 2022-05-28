@@ -16,6 +16,7 @@ class CreateRelatedLinksTable extends Migration
         Schema::create('related_links', function (Blueprint $table) {
             $table->id('id_related_link');
             $table->string('link');
+            $table->timestamps();
         });
     }
 

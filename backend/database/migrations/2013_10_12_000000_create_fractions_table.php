@@ -17,6 +17,7 @@ class CreateFractionsTable extends Migration
             $table->id('id_fraction');
             $table->string('name');
             $table->string('photo');
+            $table->timestamps();
         });
     }
 

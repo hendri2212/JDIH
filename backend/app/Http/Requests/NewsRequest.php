@@ -26,7 +26,7 @@ class NewsRequest extends FormRequest
         return [
             'title' => 'required|string',
             'content' => 'required|string',
-            'photos' => 'required|image',
+            'photo' => 'required|image',
             'is_published' => 'boolean'
         ];
     }

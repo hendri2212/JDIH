@@ -14,13 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->middleware('auth');
+Route::get('/login', [AuthenticationController::class, 'createLogin'])->name('login');
+Route::post('/login', [AuthenticationController::class, 'storeLogin'])->name('login.action');
+Route::get('/register', [AuthenticationController::class, 'createRegister'])->name('register');
+Route::post('/register', [AuthenticationController::class, 'storeRegister']);
+
+Route::get('/{any}', function () {
+    return view('layout.app');
+})->where('any', '.*')->middleware('auth');
 
 // Route::middleware('guest')->group(function () {
-    Route::get('/login', [AuthenticationController::class, 'createLogin'])->name('login');
-    Route::post('/login', [AuthenticationController::class, 'storeLogin'])->name('login.action');
-    Route::get('/register', [AuthenticationController::class, 'createRegister'])->name('register');
-    Route::post('/register', [AuthenticationController::class, 'storeRegister']);
 // });

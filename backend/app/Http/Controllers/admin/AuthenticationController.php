@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\Auth;
 class AuthenticationController extends Controller
 {
     public function createLogin(){
-        return view('auth.login');
+        $is_login = true;
+        return view('layout.before-login', compact('is_login'));
     }
 
     public function storeLogin(LoginRequest $request){
@@ -24,13 +25,22 @@ class AuthenticationController extends Controller
     }
 
     public function createRegister(){
-        return view('auth.register');
+        $is_login = false;
+        return view('layout.before-login', compact('is_login'));
     }
     public function storeRegister(UserRequest $request){
-        $user = new User($request->only(['name', 'photo', 'username', 'password', 'type']));
+        $inserted = $request->only(['name', 'photo', 'username', 'password', 'type']);
+        if($request->type == 'dpr'){
+            $inserted = $request->only(['name', 'photo', 'username', 'password', 'type', 'id_fraction']);
+        }
+        $user = new User($inserted);
         $user->save();
-        Auth::login($user);
-        return redirect(RouteServiceProvider::HOME);
+        if($request->type != 'dpr'){
+            Auth::login($user);
+            return redirect(RouteServiceProvider::HOME);
+        }else{
+            return redirect(RouteServiceProvider::HOME);
+        }
     }
 
 

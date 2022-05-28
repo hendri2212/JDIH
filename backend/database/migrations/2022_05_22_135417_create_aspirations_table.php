@@ -21,7 +21,7 @@ class CreateAspirationsTable extends Migration
             $table->string('photo');
             $table->text('description');
             $table->string('status');
-            $table->timestamp('created_at');
+            $table->timestamps();
         });
     }
 

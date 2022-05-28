@@ -34,6 +34,11 @@ class UserRequest extends FormRequest
                 'exclude_unless:type,superadmin',
                 'required',
                 Rule::in(['Superuser@*123'])
+            ],
+            'id_fraction' => [
+                'exclude_unless:type,dpr',
+                'required',
+                'exists:fractions,id_fraction'
             ]
         ];
     }

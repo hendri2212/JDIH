@@ -3,10 +3,13 @@
 use Illuminate\Http\Request;
 use App\Http\Controllers\admin\AuthenticationController;
 use App\Http\Controllers\FractionController;
+use App\Http\Controllers\admin\FractionController as AdminFractionController;
 use App\Http\Controllers\LegislatorController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\admin\NewsController as AdminNewsController;
 use App\Http\Controllers\RelatedLinkController;
+use App\Http\Controllers\admin\RelatedLinkController as AdminRelatedLinkController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,5 +36,26 @@ Route::get('news/newest', [NewsController::class, 'newest']);
 Route::get('related-links', [RelatedLinkController::class, 'active']);
 Route::get('legislator/member', [LegislatorController::class, 'member']);
 Route::get('fractions', [FractionController::class, 'fractions']);
+
+Route::prefix('admin')->middleware('auth:sanctum')->group(function(){
+    Route::prefix('news')->group(function($route){
+        $route->get('', [AdminNewsController::class, 'index']);
+        $route->get('{id}', [AdminNewsController::class, 'show']);
+        $route->post('create', [AdminNewsController::class, 'store']);
+        $route->post('{id}', [AdminNewsController::class, 'update']);
+    });
+    Route::prefix('related-link')->group(function($route){
+        $route->get('', [AdminRelatedLinkController::class, 'index']);
+        $route->get('{id}', [AdminRelatedLinkController::class, 'show']);
+        $route->post('create', [AdminRelatedLinkController::class, 'store']);
+        $route->post('{id}', [AdminRelatedLinkController::class, 'update']);
+    });
+    Route::prefix('fraction')->group(function($route){
+        $route->get('', [AdminFractionController::class, 'index']);
+        $route->get('{id}', [AdminFractionController::class, 'show']);
+        $route->post('create', [AdminFractionController::class, 'store']);
+        $route->post('{id}', [AdminFractionController::class, 'update']);
+    });
+});
 
 

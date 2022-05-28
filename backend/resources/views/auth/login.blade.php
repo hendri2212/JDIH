@@ -1,44 +1,58 @@
-<form method="POST" action="{{ route('login.action') }}">
-    @csrf
+<div class="row no-gutters justify-content-center">
+    <div class="col-md-6">
+        <!-- Login Form Start -->
+        <div class="m-account--form-w">
+            <div class="m-account--form">
+                <!-- Logo Start -->
+                <div class="logo">
+                    <img src="assets/img/logo.png" alt="">
+                </div>
+                <!-- Logo End -->
 
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+                <form method="post" action="{{ route('login.action') }}">
+                    @csrf
+                    <input type="hidden" name="remember" value="0">
+                    <label class="m-account--title">Login to your account</label>
+                    <x-auth-validation-errors class="mb-4" :errors="$errors" />
+                    <div class="form-group">
+                        <div class="input-group d-flex">
+                            <div class="input-group-prepend d-flex">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <x-input type="text" name="username" placeholder="Username" autocomplete="off" required />
+                        </div>
+                    </div>
 
-        <!-- Validation Errors -->
-    <x-auth-validation-errors class="mb-4" :errors="$errors" />
+                    <div class="form-group">
+                        <div class="input-group d-flex">
+                            <div class="input-group-prepend d-flex">
+                                <i class="fas fa-key"></i>
+                            </div>
+                            <x-input type="password" name="password" placeholder="Password" autocomplete="off" required />
+                        </div>
+                    </div>
 
-    <div>
-        <x-label for="username" :value="__('Username')" />
+                    <div class="m-account--actions">
+                        <a href="#" class="btn-link">Forgot Password?</a>
 
-        <x-input id="username" class="block mt-1 w-full" type="text" name="username" :value="old('username')" required autofocus />
+                        <button type="submit" class="btn btn-rounded btn-info">Login</button>
+                    </div>
+
+                    {{-- <div class="m-account--alt">
+                        <p><span>OR LOGIN WITH</span></p>
+
+                        <div class="btn-list">
+                            <a href="#" class="btn btn-rounded btn-warning">Facebook</a>
+                            <a href="#" class="btn btn-rounded btn-warning">Google</a>
+                        </div>
+                    </div> --}}
+
+                    <div class="m-account--footer">
+                        <p>&copy; 2018 ThemeLooks</p>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- Login Form End -->
     </div>
-
-    <!-- Password -->
-    <div class="mt-4">
-        <x-label for="password" :value="__('Password')" />
-
-        <x-input id="password" class="block mt-1 w-full"
-                        type="password"
-                        name="password"
-                        required autocomplete="current-password" />
-    </div>
-
-    <!-- Remember Me -->
-    <div class="block mt-4">
-        <label for="remember_me" class="inline-flex items-center">
-            <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" name="remember">
-            <span class="ml-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-        </label>
-    </div>
-
-    <div class="flex items-center justify-end mt-4">
-        @if (Route::has('password.request'))
-            <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
-                {{ __('Forgot your password?') }}
-            </a>
-        @endif
-
-        <x-button class="ml-3">
-            {{ __('Log in') }}
-        </x-button>
-    </div>
-</form>
+</div>

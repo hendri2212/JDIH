@@ -5,15 +5,23 @@
  */
 
 require('./bootstrap');
-
+require('./select2.min');
+    import $ from 'jquery';
+window.$ = window.jQuery = $;
+import jQuery from 'jquery'
+require('./main');
 import { createApp } from "vue";
 import router from './router'
 
-import Dashboard from './views/Dashboard'
+// import Dashboard from './views/Dashboard'
 
-createApp({
-    components: {
-        Dashboard,
-        BeforeLogin
-    }
-}).use(router).mount('#app')
+import CKEditor from '@ckeditor/ckeditor5-vue';
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+
+
+createApp()
+.use(router)
+.use(CKEditor)
+.use(VueSweetalert2)
+.mount('#app')
