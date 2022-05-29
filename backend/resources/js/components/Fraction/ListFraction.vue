@@ -4,30 +4,30 @@
         <panel>
             <div class="records--header">
                 <div class="title fa-shopping-bag">
-                    <h3 class="h3">Fraksi <a href="#" class="btn btn-sm btn-outline-info">Manage Fraksi</a></h3>
-                    <p>Ditemukan Total 1,330 Fraksi</p>
+                    <h3 class="h3">Fraksi <router-link :to="{name:'ListFraction'}" class="btn btn-sm btn-outline-info">Manage Fraksi</router-link></h3>
+                    <p>Ditemukan Total {{ countFractions }} Fraksi</p>
                 </div>
 
                 <div class="actions">
-                    <form action="#" class="search flex-wrap flex-md-nowrap">
-                        <input type="text" class="form-control" placeholder="Fraksi..." required>
+                    <!-- <form @submit.prevent="getFractions" class="search flex-wrap flex-md-nowrap">
+                        <input type="search" v-model="search" class="form-control" placeholder="Nama Fraksi...">
                         <button type="submit" class="btn btn-rounded"><i class="fa fa-search"></i></button>
-                    </form>
+                    </form> -->
 
                     <router-link to="/fraction/create" class="addFraction btn btn-lg btn-rounded btn-warning">Tambah Fraksi</router-link>
                 </div>
             </div>
         </panel>
-        <panel>
-            <data-table :rows="fractions">
+        <panel class="pt-4">
+            <data-table filter :rows="fractions" :pagination="pagination" sn @loadData="getFractions" :perPageOptions="[15, 25, 50]" :loading="loading" :query="query">
                 <template #thead>
-                    <table-head>NO</table-head>
+                    <!-- <table-head>NO</table-head> -->
                     <table-head>LAMBANG FRAKSI</table-head>
                     <table-head>NAMA FRAKSI</table-head>
-                    <table-head></table-head>
+                    <table-head>ACTION</table-head>
                 </template>
                 <template #tbody="{row}">
-                    <table-body v-text="row.id"></table-body>
+                    <!-- <table-body v-text="row.id"></table-body> -->
                     <!-- <table-body v-text="row.slug"></table-body> -->
                     <table-body>
                         <img style="max-width: 80px;"
@@ -35,7 +35,7 @@
                             :alt="row.title">
                     </table-body>
                     <!-- <table-body v-text="row.content"></table-body> -->
-                    <table-body v-text="row.title"></table-body>
+                    <table-body v-text="row.name"></table-body>
                     <table-body>
                         <div class="dropdown">
                         <button class="bg-white border-0" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -48,18 +48,23 @@
                         </div>
                     </table-body>
                 </template>
+                <template #empty>
+                    <TableBodyCell colspan="2">
+                        Tidak ada hasil ditemukan
+                    </TableBodyCell>
+                </template>
             </data-table>
         </panel>
     </section>
 </template>
 <script>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
 axios.defaults.withCredentials = true;
 import PageHeader from '../PageHeader.vue'
 import Panel from '../Panel.vue'
-import { DataTable, TableHead, TableBody } from '@jobinsjp/vue3-datatable'
+import { DataTable, TableHead, TableBody, TableBodyCell } from '@jobinsjp/vue3-datatable'
 
 export default {
     components: {
@@ -67,34 +72,47 @@ export default {
         Panel,
         DataTable,
         TableHead,
-        TableBody
+        TableBody,
+        TableBodyCell,
     },
     setup() {
         const route = useRoute()
         const breadcrumb = route.meta.breadcrumb
-
+        const loading = ref(true)
         const fractions = ref([])
-        const pagination = ref({})
+        const pagination = ref({
+            per_page:15
+        })
+        const query = ref({})
+        const countFractions = computed(() => fractions.value.length)
 
-        const getFractions = async () => {
-            await axios.get(window.location.origin + '/api/admin/fraction').then(response => {
-                if(response.data.length > 0){
+        const getFractions = async ({page=1, per_page=15, search=''}) => {
+            loading.value = true
+            let isSearching = search ? `&search=${search}` : ''
+            await axios.get(window.location.origin + `/api/admin/fraction?page=${page}&per_page=${per_page}${isSearching}`).then(response => {
+                if(response.data.data.length > 0){
                     fractions.value = response.data.data
-                    pagination.value = {
-                        links: response.data.links,
-                        meta: response.data.meta
-                    }
+                    pagination.value.page = response.data.meta.current_page
+                    pagination.value.total = response.data.meta.total
+                    pagination.value.per_page = 15
+                    query.value.page = response.data.meta.current_page
+                    query.value.search = search ? search : ''
                 }
+                loading.value = false
             })
             
         }
         
-        getFractions()
+        // getFractions({})
 
         return {
             breadcrumb,
+            loading,
             fractions,
-            pagination
+            countFractions,
+            pagination,
+            query,
+            getFractions
         }
 
     },

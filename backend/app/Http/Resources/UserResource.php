@@ -3,8 +3,9 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Str;
 
-class AuthorResource extends JsonResource
+class UserResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,7 +18,11 @@ class AuthorResource extends JsonResource
         return [
             'id' => $this->id_user,
             'name' => $this->name,
-            'photo' => $this->photo
+            'photo' => $this->photo,
+            'username' => $this->username,
+            'type' => Str::upper($this->type),
+            'created_at' => $this->created_at,
+            'fraction' => $this->fraction != null ? new FractionResource($this->fraction) : null
         ];
     }
 }

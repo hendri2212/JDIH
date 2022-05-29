@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class UserRequest extends FormRequest
+class AnotherLevelUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,10 +28,6 @@ class UserRequest extends FormRequest
             'photo' => 'required',
             'username' => 'required|unique:users',
             'password' => 'required|min:8',
-            'secret_key' => [
-                'required',
-                Rule::in(['Superuser@*123'])
-            ],
             'id_fraction' => [
                 'exclude_unless:type,dpr',
                 'required',

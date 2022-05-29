@@ -9,6 +9,6 @@ class LegislatorController extends Controller
 {
     public function member(){
         $member = User::where('type', 'dpr')->get();
-        return response()->json($member);
+        return response()->json($member, 200);
     }
 }

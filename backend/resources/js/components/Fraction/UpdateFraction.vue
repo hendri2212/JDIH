@@ -4,8 +4,8 @@
         <panel>
             <div class="records--header">
                 <div class="title fa-shopping-bag">
-                    <h3 class="h3">Fraksi <a href="#" class="btn btn-sm btn-outline-info">Manage Fraksi</a></h3>
-                    <p>Ditemukan Total 1,330 Fraksi</p>
+                    <h3 class="h3">Fraksi <router-link :to="{name:'ListFraction'}" class="btn btn-sm btn-outline-info">Manage Fraksi</router-link></h3>
+                    <!-- <p>Ditemukan Total 1,330 Fraksi</p> -->
                 </div>
 
                 <div class="actions">
@@ -73,17 +73,17 @@ export default {
         const swal = inject('$swal')
         const breadcrumb = route.meta.breadcrumb
 
-        const title = ref('')
+        const name = ref('')
         const photo = ref(null)
         const getFraction = async () => {
             await axios.get(window.location.origin + '/api/admin/fraction/'+ route.params.id).then(response => {
-                title.value = response.data.title
+                name.value = response.data.name
                 photo.value = response.data.photo
             })
         }
         const updateFraksi = async () => {
             let formData =  new FormData()
-            formData.append('title', title.value)
+            formData.append('name', name.value)
             formData.append('photo', photo.value.files[0])
             axios.post(window.location.origin + '/api/admin/fraction/'+ route.params.id, formData).then(response => {
                 swal({
@@ -91,7 +91,7 @@ export default {
                     title: 'Berhasil!',
                     text: response.data,
                 })
-            }).catch(() => {
+            }).catch((response) => {
                 swal({
                     icon: 'error',
                     title: 'Gagal!',
@@ -104,7 +104,7 @@ export default {
 
         return {
             breadcrumb,
-            title,
+            name,
             photo,
             updateFraksi
         }

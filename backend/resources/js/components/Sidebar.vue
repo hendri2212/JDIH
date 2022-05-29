@@ -70,6 +70,48 @@
                         <li>
                             <a href="#">
                                 <i class="fa fa-newspaper"></i>
+                                <span>Fraksi</span>
+                            </a>
+
+                            <ul>
+                                <li :class="{active:$route.name=='ListFraction'}">
+                                    <router-link :to="{name:'ListFraction'}">
+                                        <i class="fa fa-list"></i>
+                                        <span>List Fraksi</span>
+                                    </router-link>
+                                </li>
+                                <li :class="{active:$route.name=='CreateFraction'}">
+                                    <router-link :to="{name:'CreateFraction'}">
+                                        <i class="fa fa-plus"></i>
+                                        <span>Tambah Fraksi</span>
+                                    </router-link>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-newspaper"></i>
+                                <span>Program Kerja</span>
+                            </a>
+
+                            <ul>
+                                <li :class="{active:$route.name=='ListWorkPlan'}">
+                                    <router-link :to="{name:'ListWorkPlan'}">
+                                        <i class="fa fa-list"></i>
+                                        <span>List Program Kerja</span>
+                                    </router-link>
+                                </li>
+                                <li :class="{active:$route.name=='CreateWorkPlan'}">
+                                    <router-link :to="{name:'CreateWorkPlan'}">
+                                        <i class="fa fa-plus"></i>
+                                        <span>Tambah Program Kerja</span>
+                                    </router-link>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-newspaper"></i>
                                 <span>Link Terkait</span>
                             </a>
 

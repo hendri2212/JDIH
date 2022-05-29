@@ -10,6 +10,9 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\admin\NewsController as AdminNewsController;
 use App\Http\Controllers\RelatedLinkController;
 use App\Http\Controllers\admin\RelatedLinkController as AdminRelatedLinkController;
+use App\Http\Controllers\WorkPlanController;
+use App\Http\Controllers\admin\WorkPlanController as AdminWorkPlanController;
+use App\Http\Controllers\admin\UserController as AdminUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,14 +33,23 @@ Route::post('auth/login', [AuthenticationController::class, 'login']);
 Route::post('auth/register', [AuthenticationController::class, 'register']);
 
 // Route::apiResource('news', NewsController::class);
-Route::get('news', [NewsController::class, 'all']);
-Route::get('news/{slug}', [NewsController::class, 'show']);
-Route::get('news/newest', [NewsController::class, 'newest']);
+Route::prefix('news')->group(function($route){
+    $route->get('', [NewsController::class, 'all']);
+    $route->get('{slug}', [NewsController::class, 'show']);
+    $route->get('newest', [NewsController::class, 'newest']);
+});
 Route::get('related-links', [RelatedLinkController::class, 'active']);
 Route::get('legislator/member', [LegislatorController::class, 'member']);
 Route::get('fractions', [FractionController::class, 'fractions']);
+Route::get('work-plan', [WorkPlanController::class, 'index']);
 
 Route::prefix('admin')->middleware('auth:sanctum')->group(function(){
+    Route::prefix('user')->group(function($route){
+        $route->get('', [AdminUserController::class, 'index']);
+        // $route->get('{id}', [AdminNewsController::class, 'show']);
+        // $route->post('create', [AdminNewsController::class, 'store']);
+        // $route->post('{id}', [AdminNewsController::class, 'update']);
+    });
     Route::prefix('news')->group(function($route){
         $route->get('', [AdminNewsController::class, 'index']);
         $route->get('{id}', [AdminNewsController::class, 'show']);
@@ -49,12 +61,21 @@ Route::prefix('admin')->middleware('auth:sanctum')->group(function(){
         $route->get('{id}', [AdminRelatedLinkController::class, 'show']);
         $route->post('create', [AdminRelatedLinkController::class, 'store']);
         $route->post('{id}', [AdminRelatedLinkController::class, 'update']);
+        $route->delete('{id}', [AdminRelatedLinkController::class, 'destroy']);
     });
     Route::prefix('fraction')->group(function($route){
         $route->get('', [AdminFractionController::class, 'index']);
         $route->get('{id}', [AdminFractionController::class, 'show']);
         $route->post('create', [AdminFractionController::class, 'store']);
         $route->post('{id}', [AdminFractionController::class, 'update']);
+        $route->delete('{id}', [AdminFractionController::class, 'destroy']);
+    });
+    Route::prefix('work-plan')->group(function($route){
+        $route->get('', [AdminWorkPlanController::class, 'index']);
+        $route->get('{id}', [AdminWorkPlanController::class, 'show']);
+        $route->post('create', [AdminWorkPlanController::class, 'store']);
+        $route->post('{id}', [AdminWorkPlanController::class, 'update']);
+        $route->delete('{id}', [AdminWorkPlanController::class, 'destroy']);
     });
 });
 

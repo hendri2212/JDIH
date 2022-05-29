@@ -1,13 +1,3 @@
-<template>    
-    <layout>
-        <router-view></router-view>
-    </layout>
+<template>
+    <router-view></router-view>
 </template>
-<script>
-import Layout from './Layout'
-export default {
-    components: {
-        Layout
-    }
-}
-</script>

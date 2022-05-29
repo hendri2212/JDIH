@@ -4,7 +4,7 @@
         <panel>
             <div class="records--header">
                 <div class="title fa-shopping-bag">
-                    <h3 class="h3">Berita <a href="#" class="btn btn-sm btn-outline-info">Manage Berita</a></h3>
+                    <h3 class="h3">Berita <router-link :to="{ name:'ListNews' }" class="btn btn-sm btn-outline-info">Manage Berita</router-link></h3>
                     <!-- <p>Ditemukan Total 1,330 Berita</p> -->
                 </div>
 
@@ -111,7 +111,7 @@ export default {
                     title: 'Berhasil!',
                     text: response.data,
                 })
-            }).catch(() => {
+            }).catch((response) => {
                 swal({
                     icon: 'error',
                     title: 'Gagal!',

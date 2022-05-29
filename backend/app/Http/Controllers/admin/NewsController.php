@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NewsRequest;
 use App\Http\Resources\NewsCollection;
+use App\Http\Resources\NewsResource;
 use App\Models\News;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,9 +19,14 @@ class NewsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $news = News::orderBy('created_at', 'desc')->paginate();
+        $per_page = $request->get('per_page');
+        $search = $request->has('search') ? $request->get('search') : '';
+        if($per_page != 15 && $per_page != 25 && $per_page != 50){
+            $per_page = 15;
+        }
+        $news = News::where('title', 'like', '%'.$search.'%')->orderBy('created_at', 'desc')->paginate($per_page);
         return new NewsCollection($news);
     }
 
@@ -58,7 +64,7 @@ class NewsController extends Controller
     public function show($id)
     {
         $news = News::find($id);
-        return response()->json($news, 200);
+        return response()->json(new NewsResource($news), 200);
     }
 
     /**

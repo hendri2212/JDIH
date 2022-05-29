@@ -19,8 +19,12 @@ import CKEditor from '@ckeditor/ckeditor5-vue';
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 
-
-createApp()
+import Layout from './views/Layout'
+createApp({
+    components:{
+        Layout
+    }
+})
 .use(router)
 .use(CKEditor)
 .use(VueSweetalert2)

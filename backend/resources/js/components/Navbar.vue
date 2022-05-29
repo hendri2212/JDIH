@@ -22,63 +22,8 @@
         </a>
         <!-- Sidebar Toggle Button End -->
 
-        <!-- Navbar Search Start -->
-        <div class="navbar--search">
-            <form action="search-results.html">
-                <input type="search" name="search" class="form-control" placeholder="Search Something..." required>
-                <button class="btn-link"><i class="fa fa-search"></i></button>
-            </form>
-        </div>
-        <!-- Navbar Search End -->
-
-        <div class="navbar--nav ml-auto">
+        <!-- <div class="navbar--nav ml-auto">
             <ul class="nav">
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fa fa-bell"></i>
-                        <span class="badge text-white bg-blue">7</span>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="mailbox_inbox.html" class="nav-link">
-                        <i class="fa fa-envelope"></i>
-                        <span class="badge text-white bg-blue">4</span>
-                    </a>
-                </li>
-
-                <!-- Nav Language Start -->
-                <li class="nav-item dropdown nav-language">
-                    <a href="#" class="nav-link" data-toggle="dropdown">
-                        <img src="assets/img/flags/us.png" alt="">
-                        <span>English</span>
-                        <i class="fa fa-angle-down"></i>
-                    </a>
-
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="">
-                                <img src="assets/img/flags/de.png" alt="">
-                                <span>German</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="">
-                                <img src="assets/img/flags/fr.png" alt="">
-                                <span>French</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="">
-                                <img src="assets/img/flags/us.png" alt="">
-                                <span>English</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <!-- Nav Language End -->
-
-                <!-- Nav User Start -->
                 <li class="nav-item dropdown nav--user online">
                     <a href="#" class="nav-link" data-toggle="dropdown">
                         <img src="assets/img/avatars/01_80x80.png" alt="" class="rounded-circle">
@@ -95,8 +40,7 @@
                         <li><a href="#"><i class="fa fa-power-off"></i>Logout</a></li>
                     </ul>
                 </li>
-                <!-- Nav User End -->
             </ul>
-        </div>
+        </div> -->
     </header>
 </template>

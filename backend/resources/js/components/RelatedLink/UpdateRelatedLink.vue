@@ -4,8 +4,8 @@
         <panel>
             <div class="records--header">
                 <div class="title fa-shopping-bag">
-                    <h3 class="h3">Link Terkait <a href="#" class="btn btn-sm btn-outline-info">Manage Link Terkait</a></h3>
-                    <p>Ditemukan Total 1,330 Link Terkait</p>
+                    <h3 class="h3">Link Terkait <router-link :to="{ name:'ListRelatedLink' }" class="btn btn-sm btn-outline-info">Manage Link Terkait</router-link></h3>
+                    <!-- <p>Ditemukan Total 1,330 Link Terkait</p> -->
                 </div>
 
                 <div class="actions">
@@ -92,7 +92,7 @@ export default {
                     title: 'Berhasil!',
                     text: response.data,
                 })
-            }).catch(() => {
+            }).catch((response) => {
                 swal({
                     icon: 'error',
                     title: 'Gagal!',

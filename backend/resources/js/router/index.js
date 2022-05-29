@@ -13,6 +13,13 @@ import Fraction from '../views/Fraction'
 import ListFraction from '../components/Fraction/ListFraction'
 import CreateFraction from '../components/Fraction/CreateFraction'
 import UpdateFraction from '../components/Fraction/UpdateFraction'
+import WorkPlan from '../views/WorkPlan'
+import ListWorkPlan from '../components/WorkPlan/ListWorkPlan'
+import CreateWorkPlan from '../components/WorkPlan/CreateWorkPlan'
+import UpdateWorkPlan from '../components/WorkPlan/UpdateWorkPlan'
+import ListUser from '../components/User/ListUser'
+import CreateUser from '../components/User/CreateUser'
+import UpdateUser from '../components/User/UpdateUser'
 
 const routes = [
     {
@@ -188,6 +195,122 @@ const routes = [
                             is_active:true,
                             link: null,
                             title: "Tambah Fraksi"
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        path: '/work-plan',
+        component: WorkPlan,
+        children:[
+            {
+                path: '',
+                component: ListWorkPlan,
+                name: 'ListWorkPlan',
+                meta: {
+                    breadcrumb : [
+                        {
+                            is_active:true,
+                            link: null,
+                            title: "Program Kerja"
+                        }
+                    ]
+                }
+            },
+            {
+                path: ':id',
+                component: UpdateWorkPlan,
+                name: 'UpdateWorkPlan',
+                meta: {
+                    breadcrumb : [
+                        {
+                            is_active:false,
+                            link: '/work-plan',
+                            title: "Program Kerja"
+                        },
+                        {
+                            is_active:true,
+                            link: null,
+                            title: "Update Program Kerja"
+                        }
+                    ]
+                }
+            },
+            {
+                path: 'create',
+                component: CreateWorkPlan,
+                name: 'CreateWorkPlan',
+                meta: {
+                    breadcrumb : [
+                        {
+                            is_active:false,
+                            link: '/work-plan',
+                            title: "Program Kerja"
+                        },
+                        {
+                            is_active:true,
+                            link: null,
+                            title: "Tambah Program Kerja"
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        path: '/user',
+        component: WorkPlan,
+        children:[
+            {
+                path: '',
+                component: ListUser,
+                name: 'ListUser',
+                meta: {
+                    breadcrumb : [
+                        {
+                            is_active:true,
+                            link: null,
+                            title: "User"
+                        }
+                    ]
+                }
+            },
+            {
+                path: ':id',
+                component: UpdateUser,
+                name: 'UpdateUser',
+                meta: {
+                    breadcrumb : [
+                        {
+                            is_active:false,
+                            link: '/user',
+                            title: "User"
+                        },
+                        {
+                            is_active:true,
+                            link: null,
+                            title: "Update User"
+                        }
+                    ]
+                }
+            },
+            {
+                path: 'create',
+                component: CreateUser,
+                name: 'CreateUser',
+                meta: {
+                    breadcrumb : [
+                        {
+                            is_active:false,
+                            link: '/user',
+                            title: "User"
+                        },
+                        {
+                            is_active:true,
+                            link: null,
+                            title: "Tambah User"
                         }
                     ]
                 }

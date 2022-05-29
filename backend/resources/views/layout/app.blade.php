@@ -10,7 +10,9 @@
     </head>
     <body class="antialiased">
         <div id="app">
-            <router-view></router-view>
+            <layout>
+                <router-view></router-view>
+            </layout>
         </div>
 
         <script src="{{ asset('js/perfect-scrollbar.min.js') }}"></script>

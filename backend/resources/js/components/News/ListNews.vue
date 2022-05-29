@@ -4,36 +4,36 @@
         <panel>
             <div class="records--header">
                 <div class="title fa-shopping-bag">
-                    <h3 class="h3">Berita <a href="#" class="btn btn-sm btn-outline-info">Manage Berita</a></h3>
-                    <p>Ditemukan Total 1,330 Berita</p>
+                    <h3 class="h3">Berita <router-link :to="{ name:'ListNews' }" class="btn btn-sm btn-outline-info">Manage Berita</router-link></h3>
+                    <p>Ditemukan Total {{ countNews }} Berita</p>
                 </div>
 
                 <div class="actions">
-                    <form action="#" class="search flex-wrap flex-md-nowrap">
+                    <!-- <form action="#" class="search flex-wrap flex-md-nowrap">
                         <input type="text" class="form-control" placeholder="Judul berita..." required>
-                        <!-- <select name="select" class="form-control">
+                        <select name="select" class="form-control">
                             <option value="" selected>Product Category</option>
-                        </select> -->
+                        </select>
                         <button type="submit" class="btn btn-rounded"><i class="fa fa-search"></i></button>
-                    </form>
+                    </form> -->
 
                     <router-link to="/news/create" class="addNews btn btn-lg btn-rounded btn-warning">Tambah Berita</router-link>
                 </div>
             </div>
         </panel>
         <panel>
-            <data-table :rows="news">
+            <data-table filter :rows="news" :pagination="pagination" sn @loadData="getNews" :perPageOptions="[15, 25, 50]" :loading="loading" :query="query">
                 <template #thead>
-                    <table-head>NO</table-head>
+                    <!-- <table-head>NO</table-head> -->
                     <!-- <table-head>SLUG</table-head> -->
                     <table-head>JUDUL</table-head>
                     <table-head>FOTO</table-head>
                     <!-- <table-head>CONTENT</table-head> -->
                     <table-head>PENULIS</table-head>
-                    <table-head></table-head>
+                    <table-head>ACTION</table-head>
                 </template>
                 <template #tbody="{row}">
-                    <table-body v-text="row.id"></table-body>
+                    <!-- <table-body v-text="row.id"></table-body> -->
                     <!-- <table-body v-text="row.slug"></table-body> -->
                     <table-body v-text="row.title"></table-body>
                     <table-body>
@@ -63,18 +63,23 @@
                         </div>
                     </table-body>
                 </template>
+                <template #empty>
+                    <TableBodyCell colspan="2">
+                        Tidak ada hasil ditemukan
+                    </TableBodyCell>
+                </template>
             </data-table>
         </panel>
     </section>
 </template>
 <script>
-import { onMounted, ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
 axios.defaults.withCredentials = true;
 import PageHeader from '../PageHeader.vue'
 import Panel from '../Panel.vue'
-import { DataTable, TableHead, TableBody } from '@jobinsjp/vue3-datatable'
+import { DataTable, TableHead, TableBody, TableBodyCell } from '@jobinsjp/vue3-datatable'
 
 export default {
     components: {
@@ -82,33 +87,45 @@ export default {
         Panel,
         DataTable,
         TableHead,
-        TableBody
+        TableBody,
+        TableBodyCell,
     },
     setup() {
         const route = useRoute()
         const breadcrumb = route.meta.breadcrumb
-
+        const loading = ref(true)
         const news = ref([])
-        const pagination = ref({})
+        const pagination = ref({
+            per_page:15
+        })
+        const query = ref({})
+        const countNews = computed(() => news.value.length)
 
-        const getNews = async () => {
-            await axios.get(window.location.origin + '/api/admin/news').then(response => {
-                news.value = response.data.data
-                pagination.value = {
-                    links: response.data.links,
-                    meta: response.data.meta
+        const getNews = async ({page=1, per_page=15, search=''}) => {
+            loading.value = true
+            let isSearching = search ? `&search=${search}` : ''
+            await axios.get(window.location.origin + `/api/admin/news?page=${page}&per_page=${per_page}${isSearching}`).then(response => {
+                if(response.data.data.length > 0){
+                    news.value = response.data.data
+                    pagination.value.page = response.data.meta.current_page
+                    pagination.value.total = response.data.meta.total
+                    pagination.value.per_page = 15
+                    query.value.page = response.data.meta.current_page
+                    query.value.search = search ? search : ''
                 }
+                loading.value = false
             })
             
         }
-        
-        getNews()
-        // onMounted(getNews)
 
         return {
             breadcrumb,
+            loading,
             news,
-            pagination
+            countNews,
+            pagination,
+            query,
+            getNews
         }
 
     },

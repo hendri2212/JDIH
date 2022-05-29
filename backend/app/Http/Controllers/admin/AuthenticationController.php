@@ -21,7 +21,7 @@ class AuthenticationController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        return redirect('/');
     }
 
     public function createRegister(){
@@ -29,18 +29,12 @@ class AuthenticationController extends Controller
         return view('layout.before-login', compact('is_login'));
     }
     public function storeRegister(UserRequest $request){
+        $request->type = 'superadmin';
         $inserted = $request->only(['name', 'photo', 'username', 'password', 'type']);
-        if($request->type == 'dpr'){
-            $inserted = $request->only(['name', 'photo', 'username', 'password', 'type', 'id_fraction']);
-        }
         $user = new User($inserted);
         $user->save();
-        if($request->type != 'dpr'){
-            Auth::login($user);
-            return redirect(RouteServiceProvider::HOME);
-        }else{
-            return redirect(RouteServiceProvider::HOME);
-        }
+        Auth::login($user);
+        return redirect(RouteServiceProvider::HOME);
     }
 
 
