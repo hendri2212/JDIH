@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AnotherLevelUserRequest;
 use App\Http\Resources\UserCollection;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use App\Models\User;
 
@@ -19,13 +20,24 @@ class UserController extends Controller
         $user = User::where('type', '!=', 'superadmin')->where('name', 'like', '%'.$search.'%')->orderBy('created_at', 'desc')->paginate($per_page);
         return new UserCollection($user);
     }
+
     public function createNewUser(AnotherLevelUserRequest $request){
-        $inserted = $request->only(['name', 'photo', 'username', 'password', 'type']);
+        $inserted = $request->only(['name', 'username', 'password', 'type']);
         if($request->type == 'dpr'){
-            $inserted = $request->only(['name', 'photo', 'username', 'password', 'type', 'id_fraction']);
+            $inserted = $request->only(['name', 'username', 'password', 'type', 'id_fraction']);
         }
+        $path = null;
+        if($request->hasFile('photo')){
+            $path = $request->file('photo')->store('user', 'public');
+        }
+        $inserted['photo'] = $path;
         $user = new User($inserted);
         $user->save();
         return response()->json("Berhasil menambah user", 201);
+    }
+
+    public function show($id){
+        $user = User::find($id);
+        return new UserResource($user);
     }
 }

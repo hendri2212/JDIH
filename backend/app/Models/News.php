@@ -20,6 +20,10 @@ class News extends Model
         return $this->belongsTo(User::class, 'id_user', 'id_user');
     }
 
+    public function tags(){
+        return $this->belongsToMany(Tag::class, 'news_tag', 'tag_id', 'news_id');
+    }
+
     private function createSlug($title){
         if (static::whereSlug($slug = Str::slug($title))->exists()) {
             $max = static::whereTitle($title)->latest('id_news')->skip(1)->value('slug');

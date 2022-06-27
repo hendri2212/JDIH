@@ -10,7 +10,7 @@ use App\Models\News;
 class NewsController extends Controller
 {
     public function all(){
-        $news = News::where('is_published', true)->orderBy('created_at', 'desc')->paginate();
+        $news = News::with('tags')->where('is_published', true)->orderBy('created_at', 'desc')->paginate();
         return new NewsCollection($news);
     }
 

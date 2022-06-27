@@ -3,7 +3,6 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Str;
 
 class UserResource extends JsonResource
 {
@@ -20,7 +19,7 @@ class UserResource extends JsonResource
             'name' => $this->name,
             'photo' => $this->photo,
             'username' => $this->username,
-            'type' => Str::upper($this->type),
+            'type' => $this->type,
             'created_at' => $this->created_at,
             'fraction' => $this->fraction != null ? new FractionResource($this->fraction) : null
         ];

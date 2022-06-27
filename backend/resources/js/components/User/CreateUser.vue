@@ -23,7 +23,7 @@
 
                     <!-- <a href="#" class="btn btn-rounded btn-danger">Hapus User</a> -->
                 </div>
-                <form>
+                <form @submit.prevent="createUser">
                     <div class="form-group row">
                         <span class="label-text col-md-3 col-form-label">Nama: *</span>
 
@@ -63,6 +63,14 @@
                             </select>
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <span class="label-text col-md-3 col-form-label">Foto: *</span>
+
+                        <div class="col-md-9">
+                            <input ref="photo" type="file" name="photo" class="form-control" >
+                            <small>*Anggota Dewan wajib mengisi foto untuk di tampilkan di halaman utama</small>
+                        </div>
+                    </div>
 
                     <div class="row mt-3">
                         <div class="col-md-9 offset-md-3">
@@ -96,6 +104,7 @@ export default {
         const username = ref('')
         const password = ref('')
         const type = ref('admin')
+        const photo = ref(null)
         const fraction = ref([])
         const id_fraction = ref(null)
         const getFraction = async () => {
@@ -103,26 +112,32 @@ export default {
                 fraction.value = response.data
             })
         }
-        // const createWorkPlan = async () => {
-        //     let formData = {
-        //         title:  title.value,
-        //         content: content.value,
-        //         id_user: id_user.value
-        //     }
-        //     axios.post(window.location.origin + '/api/admin/work-plan/create', formData).then(response => {
-        //         swal({
-        //             icon: 'success',
-        //             title: 'Berhasil!',
-        //             text: response.data,
-        //         })
-        //     }).catch((response) => {
-        //         swal({
-        //             icon: 'error',
-        //             title: 'Gagal!',
-        //             text: response.data,
-        //         })
-        //     })
-        // }
+        const createUser = async () => {
+            let formData = new FormData
+            formData.append('name', name.value)
+            formData.append('username', username.value)
+            formData.append('password', password.value)
+            formData.append('type', type.value)
+            if(photo.value.files.length > 0){
+                formData.append('photo', photo.value.files[0])
+            }
+            if(type.value == 'dpr'){
+                formData.append('id_fraction', id_fraction.value)
+            }
+            axios.post(window.location.origin + '/api/admin/user/create', formData).then(response => {
+                swal({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: response.data,
+                })
+            }).catch((response) => {
+                swal({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: response.data,
+                })
+            })
+        }
 
         getFraction()
 
@@ -132,8 +147,10 @@ export default {
             username,
             password,
             type,
+            photo,
             fraction,
             id_fraction,
+            createUser,
         }
     },
 }
