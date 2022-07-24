@@ -37,7 +37,7 @@
                     <table-body v-text="row.photo"></table-body>
                     <table-body v-text="row.name"></table-body>
                     <table-body v-text="row.username"></table-body>
-                    <table-body v-text="row.type"></table-body>
+                    <table-body v-text="row.type.toUpperCase()"></table-body>
                     <table-body v-text="row.created_at"></table-body>
                     <table-body>
                         <div class="dropdown">

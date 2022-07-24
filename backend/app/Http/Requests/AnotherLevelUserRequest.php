@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class AnotherLevelUserRequest extends FormRequest
 {
@@ -25,9 +27,23 @@ class AnotherLevelUserRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'photo' => 'required',
+            'type' => [
+                'required',
+                Rule::in(['dpr', 'admin'])
+            ],
+            'photo' => [
+                Rule::requiredIf(function(){
+                    return $this->has('id') ? $this->type == 'dpr' && User::where('photo', null)->where('id_user', $this->id)->first() : $this->type == 'dpr';
+                }),
+                'image'
+            ],
             'username' => 'required|unique:users',
-            'password' => 'required|min:8',
+            'password' => [
+                Rule::requiredIf(function(){
+                    return !$this->has('id');
+                }),
+                'min:8',
+            ],
             'id_fraction' => [
                 'exclude_unless:type,dpr',
                 'required',

@@ -2,12 +2,12 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class AuthorResource extends JsonResource
+class TagCollection extends ResourceCollection
 {
     /**
-     * Transform the resource into an array.
+     * Transform the resource collection into an array.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
@@ -15,10 +15,7 @@ class AuthorResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id_user,
-            'name' => $this->name,
-            'photo' => $this->photo,
+            'data' => $this->collection
         ];
     }
 }
-

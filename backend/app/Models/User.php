@@ -17,9 +17,11 @@ class User extends Authenticatable
 
     protected $fillable = [
         'name',
+        'photo',
         'username',
         'password',
-        'type'
+        'type',
+        'id_fraction',
     ];
 
     /**
@@ -43,5 +45,9 @@ class User extends Authenticatable
 
     public function work_plan(){
         return $this->hasMany(WorkPlan::class, 'id_user', 'id_user');
+    }
+
+    public function isSuperAdmin(){
+        return $this->type == 'superadmin';
     }
 }
