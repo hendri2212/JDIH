@@ -1,14 +1,12 @@
 <template>
     <main class="bg-white p-3 my-2">
-        <h5 class="head-of-section">Semua Berita</h5>
-        <div v-for="data in news" :key="'news_'+data.id_news" class="card mb-3 border-0 border-2 border-bottom pb-2">
-            <div class="row">
-                <div class="col-4">
-                    <div class="rounded-start d-flex align-items-center bg-light" style="width:123px; height:113px; overflow: hidden;">
-                        <img :src="'http://127.0.0.1:8000/storage/'+data.photo" class="img-fluid">
-                    </div>
+        <h5 class="border-start border-5 border-warning px-2">Semua Berita</h5>
+        <div v-for="data in news" :key="'news_'+data.id_news" class="card mb-3 border-0 border-bottom rounded-0 pb-2">
+            <div class="row g-0">
+                <div class="col-3">
+                    <img :src="'http://127.0.0.1:8000/storage/'+data.photo" class="img-fluid rounded-start" style="padding-right: 5px">
                 </div>
-                <div class="col-8">
+                <div class="col-9">
                     <div class="card-body p-0">
                         <h5 class="card-title mb-0 text-truncate">{{data.title}}</h5>
                         <p class="card-text module line-clamp">{{removeHTML(data.content)}}</p>
