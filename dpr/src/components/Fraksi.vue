@@ -1,27 +1,36 @@
 <template>
     <main class="bg-white p-3 my-2">
-        <h5>Fraksi</h5>
-        <div class="row">
-            <div class="col-3 mb-2">
-                <img src="https://28.cdn.ekm.net/ekmps/shops/simplycoatings2/images/axalta-ral-1004-golden-yellow-polyester-80-gloss-powder-coating-20kg-box--1318-p.jpg?v=d4261fb7-3a27-40ab-8337-478b5b13177f" class="img-fluid">
+        <h5 class="border-start border-5 border-warning px-2">Fraksi</h5>
+        <div class="d-flex flex-wrap text-center">
+            <div class="col-3 p-1 border border-end-0 border-bottom-0">
+                <img src="@/assets/pdip.svg" class="img-fluid" style="height: 90px">
             </div>
-            <div class="col-3">
-                <img src="https://28.cdn.ekm.net/ekmps/shops/simplycoatings2/images/axalta-ral-1004-golden-yellow-polyester-80-gloss-powder-coating-20kg-box--1318-p.jpg?v=d4261fb7-3a27-40ab-8337-478b5b13177f" class="img-fluid">
+            <div class="col-3 p-1 border border-end-0 border-bottom-0">
+                <img src="@/assets/golkar.svg" class="img-fluid" style="height: 90px">
             </div>
-            <div class="col-3">
-                <img src="https://28.cdn.ekm.net/ekmps/shops/simplycoatings2/images/axalta-ral-1004-golden-yellow-polyester-80-gloss-powder-coating-20kg-box--1318-p.jpg?v=d4261fb7-3a27-40ab-8337-478b5b13177f" class="img-fluid">
+            <div class="col-3 p-1 border border-end-0 border-bottom-0">
+                <img src="@/assets/pkb.svg" class="img-fluid" style="height: 90px">
             </div>
-            <div class="col-3">
-                <img src="https://28.cdn.ekm.net/ekmps/shops/simplycoatings2/images/axalta-ral-1004-golden-yellow-polyester-80-gloss-powder-coating-20kg-box--1318-p.jpg?v=d4261fb7-3a27-40ab-8337-478b5b13177f" class="img-fluid">
+            <div class="col-3 p-1 border border-bottom-0">
+                <img src="@/assets/ppp.svg" class="img-fluid" style="height: 90px">
             </div>
-            <div class="col-3">
-                <img src="https://28.cdn.ekm.net/ekmps/shops/simplycoatings2/images/axalta-ral-1004-golden-yellow-polyester-80-gloss-powder-coating-20kg-box--1318-p.jpg?v=d4261fb7-3a27-40ab-8337-478b5b13177f" class="img-fluid">
+            <div class="col-3 p-1 border border-end-0">
+                <img src="@/assets/nasdem.svg" class="img-fluid" style="height: 90px">
             </div>
-            <div class="col-3">
-                <img src="https://28.cdn.ekm.net/ekmps/shops/simplycoatings2/images/axalta-ral-1004-golden-yellow-polyester-80-gloss-powder-coating-20kg-box--1318-p.jpg?v=d4261fb7-3a27-40ab-8337-478b5b13177f" class="img-fluid">
+            <div class="col-3 p-1 border border-end-0">
+                <img src="@/assets/gerindra.svg" class="img-fluid" style="height: 90px">
             </div>
-            <div class="col-3">
-                <img src="https://28.cdn.ekm.net/ekmps/shops/simplycoatings2/images/axalta-ral-1004-golden-yellow-polyester-80-gloss-powder-coating-20kg-box--1318-p.jpg?v=d4261fb7-3a27-40ab-8337-478b5b13177f" class="img-fluid">
+            <div class="col-3 p-1 border border-end-0">
+                <img src="@/assets/pan.svg" class="img-fluid" style="height: 90px">
+            </div>
+            <div class="col-3 p-1 border">
+                <img src="@/assets/demokrat.svg" class="img-fluid" style="height: 90px">
+            </div>
+            <div class="col-3 p-1 border border-end-0 border-top-0">
+                <img src="@/assets/pks.svg" class="img-fluid" style="height: 90px">
+            </div>
+            <div class="col-3 p-1 border border-top-0">
+                <img src="@/assets/hanura.svg" class="img-fluid" style="height: 90px">
             </div>
         </div>
     </main>

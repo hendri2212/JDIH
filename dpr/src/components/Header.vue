@@ -4,7 +4,7 @@
             <router-link to="/" class="text-decoration-none">
                 <h4 class="mb-0 text-success">DPRD Kotabaru</h4>
             </router-link>
-            <router-link to="/about" class="text-decoration-none btn btn-sm btn-outline-success">Login</router-link>
+            <router-link to="/news" class="text-decoration-none btn btn-sm btn-outline-success">Login</router-link>
         </div>
     </div>
 </template>
