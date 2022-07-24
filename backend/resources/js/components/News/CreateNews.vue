@@ -25,6 +25,13 @@
                 </div>
                 <form @submit.prevent="createNews(1)">
                     <div class="form-group row">
+                        <span class="label-text col-md-3 col-form-label">Tag Berita: *</span>
+
+                        <div class="col-md-9">
+                            <tag :settings="tagSetting" :value="tagValue" :onChange="searchNewTag" :onChangeTag="onChangeTag"></tag>
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <span class="label-text col-md-3 col-form-label">Judul Berita: *</span>
 
                         <div class="col-md-9">
@@ -64,13 +71,15 @@ import { ref, inject } from 'vue'
 import { useRoute } from 'vue-router'
 import PageHeader from '../PageHeader'
 import Panel from '../Panel'
+import Tag from '../Helper/Tagify.vue'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import axios from 'axios'
 axios.defaults.withCredentials = true;
 export default {
     components: {
         PageHeader,
-        Panel
+        Panel,
+        Tag,
     },
     setup() {
         const route = useRoute()
@@ -87,6 +96,31 @@ export default {
         const title = ref('')
         const content = ref('')
         const photo = ref(null)
+        const tagValue = ref([])
+        const tagSetting = ref({
+            whitelist: [],
+            dropdown: {
+                enabled: 0
+            },
+            callbacks: {
+                add(e) {
+                    // console.log("tag added:", e.detail);
+                }
+            }
+        })
+
+        const searchNewTag = async (query) => {
+            const {data} = await axios.get(`${window.location.origin}/api/admin/tags?query=${query}`)
+            return data.data.map(p => {
+                return {
+                    value:p.title
+                }
+            })
+        }
+
+        const onChangeTag = ({detail}) => {
+            tagValue.value = JSON.parse(detail.value)
+        }
 
         const createNews = async (is_published = 1) => {
             let formData = new FormData()
@@ -94,6 +128,7 @@ export default {
             formData.append('content', content.value)
             formData.append('photo', photo.value.files[0])
             formData.append('is_published', is_published)
+            formData.append('tags', JSON.stringify(tagValue.value))
             axios.post(window.location.origin + '/api/admin/news/create', formData).then(response => {
                 swal({
                     icon: 'success',
@@ -115,7 +150,11 @@ export default {
             title,
             content,
             photo,
-            createNews
+            tagValue,
+            tagSetting,
+            searchNewTag,
+            onChangeTag,
+            createNews,
         }
     },
 }

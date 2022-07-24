@@ -10,6 +10,7 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\admin\NewsController as AdminNewsController;
 use App\Http\Controllers\RelatedLinkController;
 use App\Http\Controllers\admin\RelatedLinkController as AdminRelatedLinkController;
+use App\Http\Controllers\admin\TagController as AdminTagController;
 use App\Http\Controllers\WorkPlanController;
 use App\Http\Controllers\admin\WorkPlanController as AdminWorkPlanController;
 use App\Http\Controllers\admin\UserController as AdminUserController;
@@ -53,6 +54,12 @@ Route::prefix('admin')->middleware('auth:sanctum')->group(function(){
         $route->get('', [AdminUserController::class, 'index']);
         $route->get('{id}', [AdminUserController::class, 'show']);
         $route->post('create', [AdminUserController::class, 'createNewUser']);
+        // $route->post('{id}', [AdminNewsController::class, 'update']);
+    });
+    Route::prefix('tags')->group(function($route){
+        $route->get('', [AdminTagController::class, 'index']);
+        // $route->get('{id}', [AdminNewsController::class, 'show']);
+        // $route->post('create', [AdminNewsController::class, 'store']);
         // $route->post('{id}', [AdminNewsController::class, 'update']);
     });
     Route::prefix('news')->group(function($route){

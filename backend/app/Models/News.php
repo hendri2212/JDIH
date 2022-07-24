@@ -21,7 +21,7 @@ class News extends Model
     }
 
     public function tags(){
-        return $this->belongsToMany(Tag::class, 'news_tag', 'tag_id', 'news_id');
+        return $this->belongsToMany(Tag::class, 'news_tag', 'news_id', 'tag_id');
     }
 
     private function createSlug($title){

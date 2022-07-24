@@ -7,6 +7,7 @@ use App\Http\Requests\NewsRequest;
 use App\Http\Resources\NewsCollection;
 use App\Http\Resources\NewsResource;
 use App\Models\News;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -14,11 +15,6 @@ use Illuminate\Support\Facades\Validator;
 
 class NewsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index(Request $request)
     {
         $per_page = $request->get('per_page');
@@ -30,12 +26,6 @@ class NewsController extends Controller
         return new NewsCollection($news);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(NewsRequest $request)
     {
         $news = new News();
@@ -51,29 +41,18 @@ class NewsController extends Controller
         // $news->id_user = Auth::id();
         $news->id_user = 1;
         $news->save();
+        $tag_id = $this->getTags($request->tags);
+        $news->tags()->sync($tag_id);
 
         return response()->json("Berita berhasil di tambahkan", 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $news = News::find($id);
         return response()->json(new NewsResource($news), 200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         // $validate = $request->validate([
@@ -114,18 +93,30 @@ class NewsController extends Controller
         // $news->id_user = Auth::id();
         // $news->id_user = 1;
         $news->save();
+        $tag_id = $this->getTags($request->tags);
+        $news->tags()->sync($tag_id);
 
         return response()->json("Berita berhasil di edit", 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         
+    }
+
+    private function getTags($tags){
+        $tagJson = json_decode($tags);
+        $tagTitles = array_column($tagJson, "value"); 
+        $tag_id = [];
+        foreach($tagTitles as $tagTitle) {
+            $tag = Tag::where('title', $tagTitle)->first();
+            if(!$tag){
+                $tag = Tag::create([
+                    "title" => $tagTitle
+                ]);
+            }
+            $tag_id[] = $tag->id_tag;
+        }
+        return $tag_id;
     }
 }
