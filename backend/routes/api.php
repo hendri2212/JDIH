@@ -38,13 +38,13 @@ Route::post('auth/register', [AuthenticationController::class, 'register']);
 // Route::apiResource('news', NewsController::class);
 Route::prefix('news')->group(function($route){
     $route->get('', [NewsController::class, 'all']);
-    $route->get('{slug}', [NewsController::class, 'show']);
     $route->get('newest', [NewsController::class, 'newest']);
+    $route->get('{slug}', [NewsController::class, 'show']);
 });
 Route::get('related-links', [RelatedLinkController::class, 'active']);
-Route::get('legislator/member', [LegislatorController::class, 'member']);
+Route::get('legislator/members', [LegislatorController::class, 'member']);
 Route::get('fractions', [FractionController::class, 'fractions']);
-Route::get('work-plan', [WorkPlanController::class, 'index']);
+Route::get('work-plans', [WorkPlanController::class, 'index']);
 
 Route::prefix('admin')->middleware('auth:sanctum')->group(function(){
     Route::get('me', function(){

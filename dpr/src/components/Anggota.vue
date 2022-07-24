@@ -1,27 +1,35 @@
 <template>
     <main class="p-3 my-2">
-        <h5>Anggota DPR</h5>
-        <div class="d-flex">
-            <div class="col-4">
-                <div class="card">
-                    <img src="https://blue.kumparan.com/image/upload/fl_progressive,fl_lossy,c_fill,q_auto:best,w_480,ar_5:7/v1634025439/0180d071d9e3bd18b55dcc4924f48437.jpg" alt="">
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="card">
-                    <img src="https://blue.kumparan.com/image/upload/fl_progressive,fl_lossy,c_fill,q_auto:best,w_480,ar_5:7/v1634025439/a9e36e666c24649ccb9a234f3de7af4bddde0c8158b5161ac44de9a0e6018f6a.jpg" alt="">
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="card">
-                    <img src="https://blue.kumparan.com/image/upload/fl_progressive,fl_lossy,c_fill,q_auto:best,w_480,ar_5:7/v1634025439/c0cedaa80899021c1a0da45c74002c51b2f0db6f739b83c671f754bd77a87375.jpg" alt="">
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="card">
-                    <img src="https://blue.kumparan.com/image/upload/fl_progressive,fl_lossy,c_fill,q_auto:best,w_480,ar_5:7/v1634025439/8b55570d5e6b566271c809f0da6a4b96e8b673ae1fa7fd88835169a5262301b3.jpg" alt="">
+        <h5 class="head-of-section">Anggota DPR</h5>
+        <div class="d-flex" style="overflow-x: scroll;">
+            <div v-for="data in member_of_legislators" :key="'member_of_legislator_'+data.id_user" class="col-4">
+                <div class="card" style="overflow:hidden; border:0;">
+                    <img :src="'http://127.0.0.1:8000/storage/'+data.photo" style="min-height:183px; height:183px;">
                 </div>
             </div>
         </div>
     </main>
 </template>
+<script>
+    import axios from 'axios'
+    export default {
+        name: "Anggota",
+        data(){
+            return {
+                member_of_legislators:[]
+            }
+        },
+        created(){
+            axios.get("http://127.0.0.1:8000/api/legislator/members").then(response => {
+                this.member_of_legislators = response.data
+            })
+        }
+    }
+</script>
+<style scoped>
+    .head-of-section{
+        border-left: 6px solid rgb(75, 163, 222);
+        padding-left:3px;
+        border-top-left-radius: 3px;
+    }
+</style>

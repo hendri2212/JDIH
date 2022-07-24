@@ -16,7 +16,7 @@ class NewsController extends Controller
 
     public function newest()
     {
-        $news = News::where('is_published', true)->orderBy('created_at', 'desc')->get()->take(5);
+        $news = News::with('tags')->where('is_published', true)->orderBy('created_at', 'desc')->get()->take(5);
         return new NewsCollection($news);
     }
 
