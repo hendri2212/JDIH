@@ -8,35 +8,20 @@
             </div>
 
             <div class="profile--name">
-                <a href="profile.html" class="btn-link">Henry Foster</a>
+                <a href="" class="btn-link">{{nama}}</a>
             </div>
 
             <div class="profile--nav">
                 <ul class="nav">
                     <li class="nav-item">
-                        <a href="profile.html" class="nav-link" title="User Profile">
-                            <i class="fa fa-user"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="lock-screen.html" class="nav-link" title="Lock Screen">
-                            <i class="fa fa-lock"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="mailbox_inbox.html" class="nav-link" title="Messages">
-                            <i class="fa fa-envelope"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" title="Logout">
+                        <span @click="logout" class="nav-link" title="Logout">
                             <i class="fa fa-sign-out-alt"></i>
-                        </a>
+                        </span>
                     </li>
                 </ul>
             </div>
         </div>
-        <div class="sidebar--nav">
+        <div class="sidebar--nav" v-if="!loading">
             <ul>
                 <li>
                     <ul>
@@ -45,6 +30,27 @@
                                 <i class="fa fa-home"></i>
                                 <span>Dashboard</span>
                             </router-link>
+                        </li>
+                        <li v-if="type == 'superadmin' || type == 'admin'">
+                            <a href="#">
+                                <i class="fa fa-user"></i>
+                                <span>User</span>
+                            </a>
+
+                            <ul>
+                                <li :class="{active:$route.name=='ListUser'}">
+                                    <router-link :to="{name:'ListUser'}">
+                                        <i class="fa fa-list"></i>
+                                        <span>List User</span>
+                                    </router-link>
+                                </li>
+                                <li :class="{active:$route.name=='CreateUser'}">
+                                    <router-link :to="{name:'CreateUser'}">
+                                        <i class="fa fa-plus"></i>
+                                        <span>Tambah User</span>
+                                    </router-link>
+                                </li>
+                            </ul>
                         </li>
                         <li>
                             <a href="#">
@@ -67,9 +73,9 @@
                                 </li>
                             </ul>
                         </li>
-                        <li>
+                        <li v-if="type == 'superadmin' || type == 'admin'">
                             <a href="#">
-                                <i class="fa fa-newspaper"></i>
+                                <i class="fa fa-flag"></i>
                                 <span>Fraksi</span>
                             </a>
 
@@ -88,9 +94,9 @@
                                 </li>
                             </ul>
                         </li>
-                        <li>
+                        <li v-if="type == 'superadmin' || type == 'admin'">
                             <a href="#">
-                                <i class="fa fa-newspaper"></i>
+                                <i class="fa fa-list"></i>
                                 <span>Program Kerja</span>
                             </a>
 
@@ -109,7 +115,7 @@
                                 </li>
                             </ul>
                         </li>
-                        <li>
+                        <!-- <li>
                             <a href="#">
                                 <i class="fa fa-newspaper"></i>
                                 <span>Link Terkait</span>
@@ -129,7 +135,7 @@
                                     </router-link>
                                 </li>
                             </ul>
-                        </li>
+                        </li> -->
                     </ul>
                 </li>
 
@@ -325,3 +331,38 @@
         </div> -->
     </aside>
 </template>
+<script>
+import { ref } from 'vue'
+import axios from 'axios'
+axios.defaults.withCredentials = true;
+export default {
+    setup() {
+        const loading = ref(false)
+        const nama = ref('')
+        const type = ref('')
+        const getUser = async () => {
+            loading.value = true
+            axios.get(window.location.origin + '/api/admin/me').then(response => {
+                nama.value = response.data.name
+                type.value = response.data.type
+                loading.value = false
+            })
+        }
+
+        const logout = async () => {
+            axios.post(window.location.origin + '/logout').then(response => {
+                window.location.reload()
+            })
+        }
+
+        getUser()
+
+        return {
+            loading,
+            nama,
+            type,
+            logout,
+        }
+    },
+}
+</script>

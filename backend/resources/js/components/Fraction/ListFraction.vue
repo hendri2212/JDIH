@@ -43,7 +43,7 @@
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                             <li><router-link class="dropdown-item" :to="{name:'UpdateFraction', params:{id:row.id}}">Edit</router-link></li>
-                            <li><a class="dropdown-item" href="#">Delete</a></li>
+                            <li><span class="dropdown-item" @click="showModalDelete(row.id)">Delete</span></li>
                         </ul>
                         </div>
                     </table-body>
@@ -58,7 +58,7 @@
     </section>
 </template>
 <script>
-import { ref, computed } from 'vue'
+import { ref, computed, inject } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
 axios.defaults.withCredentials = true;
@@ -77,6 +77,7 @@ export default {
     },
     setup() {
         const route = useRoute()
+        const swal = inject('$swal')
         const breadcrumb = route.meta.breadcrumb
         const loading = ref(true)
         const fractions = ref([])
@@ -102,6 +103,37 @@ export default {
             })
             
         }
+
+        const showModalDelete = async (id) => {
+            await swal({
+                title: 'Apa anda yakin?',
+                text: 'Data ini akan dihapus secara permanen!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: "Yakin!",
+                cancelButtonText: "Batal",
+            }).then(({isConfirmed}) => {
+                if (isConfirmed) {
+                    axios.delete(window.location.origin + `/api/admin/fraction/${id}`).then(response => {
+                        let index = fractions.value.findIndex(p => {
+                            return p.id == id
+                        })
+                        fractions.value.splice(index, 1)
+                        swal({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: response.data,
+                        })
+                    }).catch(({response}) => {
+                        swal({
+                            icon: 'error',
+                            title: 'Gagal!',
+                            text: response.data,
+                        })
+                    })
+                }
+            });
+        }
         
         // getFractions({})
 
@@ -112,7 +144,8 @@ export default {
             countFractions,
             pagination,
             query,
-            getFractions
+            getFractions,
+            showModalDelete
         }
 
     },

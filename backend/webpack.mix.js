@@ -12,6 +12,9 @@ const mix = require('laravel-mix');
  */
  mix.copyDirectory('resources/font', 'public/fonts');
 mix.js('resources/js/app.js', 'public/js')
+    .js('resources/js/main.js', 'public/js')
     .vue()
     .sass('resources/sass/app.scss', 'public/css');
+
+    mix.disableSuccessNotifications();
 

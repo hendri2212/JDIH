@@ -6,6 +6,11 @@
 
         <title>Laravel</title>
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        <style>
+            body {
+                background-color: #1b2223;
+            }
+        </style>
     </head>
     <body class="antialiased">
         <div class="wrapper">
@@ -20,6 +25,6 @@
         </div>
         <!-- Wrapper End -->
 
-        <script src="{{ asset('js/app.js') }}"></script>
+        <script src="{{ mix('js/app.js') }}"></script>
     </body>
 </html>

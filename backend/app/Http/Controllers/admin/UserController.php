@@ -8,6 +8,8 @@ use App\Http\Resources\UserCollection;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
+use Hash;
 
 class UserController extends Controller
 {
@@ -36,8 +38,45 @@ class UserController extends Controller
         return response()->json("Berhasil menambah user", 201);
     }
 
+    public function update(Request $request, $id){
+        $user = User::find($id);
+        if($user){
+            $user->name = $request->name;
+            $user->username = $request->username;
+            if(trim($request->password) != ""){
+                $user->password = Hash::make($request->password);
+            }
+            $user->type = $request->type;
+            if($request->type == 'dpr'){
+                $user->id_fraction = $request->id_fraction; 
+            }else{
+                $user->id_fraction = null;
+            }
+            $path = $request->file('photo')->store('user', 'public');
+            $old_photo = $user->photo;
+            $user->photo = $path;
+            if($path != $old_photo){
+                Storage::disk('public')->delete($old_photo);
+            }
+            $user->save();
+            return response()->json("Berhasil mengubah user", 200);
+        }
+        return response()->json("User tidak ditemukan", 404);
+    }
+
     public function show($id){
         $user = User::find($id);
         return new UserResource($user);
+    }
+
+    public function destroy($id)
+    {
+        $user = User::find($id);
+        if(!$user){
+            return response()->json('User tidak ditemukan', 404);
+        }
+        $user->delete();
+        Storage::disk('public')->delete($user->photo);
+        return response()->json('Sukses menghapus user', 200);
     }
 }

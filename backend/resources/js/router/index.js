@@ -1,35 +1,101 @@
 import { createRouter, createWebHistory } from "vue-router";
+import axios from "axios"
 
+import Page404 from '../views/404'
 import Dashboard from '../views/Dashboard'
-import News from '../views/News'
+import ParentView from '../views/ParentView'
+import ListTag from '../components/Tag/ListTag'
+import CreateTag from '../components/Tag/CreateTag'
+import UpdateTag from '../components/Tag/UpdateTag'
 import ListNews from '../components/News/ListNews'
 import CreateNews from '../components/News/CreateNews'
 import UpdateNews from '../components/News/UpdateNews'
-import RelatedLink from '../views/RelatedLink'
 import ListRelatedLink from '../components/RelatedLink/ListRelatedLink'
 import CreateRelatedLink from '../components/RelatedLink/CreateRelatedLink'
 import UpdateRelatedLink from '../components/RelatedLink/UpdateRelatedLink'
-import Fraction from '../views/Fraction'
 import ListFraction from '../components/Fraction/ListFraction'
 import CreateFraction from '../components/Fraction/CreateFraction'
 import UpdateFraction from '../components/Fraction/UpdateFraction'
-import WorkPlan from '../views/WorkPlan'
 import ListWorkPlan from '../components/WorkPlan/ListWorkPlan'
 import CreateWorkPlan from '../components/WorkPlan/CreateWorkPlan'
 import UpdateWorkPlan from '../components/WorkPlan/UpdateWorkPlan'
 import ListUser from '../components/User/ListUser'
 import CreateUser from '../components/User/CreateUser'
 import UpdateUser from '../components/User/UpdateUser'
+import { nextTick } from "vue";
 
 const routes = [
+    {
+        path: '/404',
+        component: Page404,
+        name: '404'
+    },
     {
         path: '/',
         component: Dashboard,
         name: 'Dashboard'
     },
     {
+        path: '/tag',
+        component: ParentView,
+        children:[
+            {
+                path: '',
+                component: ListTag,
+                name: 'ListTag',
+                meta: {
+                    breadcrumb : [
+                        {
+                            is_active:true,
+                            link: null,
+                            title: "Tag"
+                        }
+                    ]
+                }
+            },
+            {
+                path: ':id',
+                component: UpdateTag,
+                name: 'UpdateTag',
+                meta: {
+                    breadcrumb : [
+                        {
+                            is_active:false,
+                            link: '/tag',
+                            title: "Tag"
+                        },
+                        {
+                            is_active:true,
+                            link: null,
+                            title: "Update Tag"
+                        }
+                    ]
+                }
+            },
+            {
+                path: 'create',
+                component: CreateTag,
+                name: 'CreateTag',
+                meta: {
+                    breadcrumb : [
+                        {
+                            is_active:false,
+                            link: '/tag',
+                            title: "Tag"
+                        },
+                        {
+                            is_active:true,
+                            link: null,
+                            title: "Tambah Tag"
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    {
         path: '/news',
-        component: News,
+        component: ParentView,
         children:[
             {
                 path: '',
@@ -87,7 +153,7 @@ const routes = [
     },
     {
         path: '/related-link',
-        component: RelatedLink,
+        component: ParentView,
         children:[
             {
                 path: '',
@@ -145,7 +211,7 @@ const routes = [
     },
     {
         path: '/fraction',
-        component: Fraction,
+        component: ParentView,
         children:[
             {
                 path: '',
@@ -203,7 +269,7 @@ const routes = [
     },
     {
         path: '/work-plan',
-        component: WorkPlan,
+        component: ParentView,
         children:[
             {
                 path: '',
@@ -261,7 +327,7 @@ const routes = [
     },
     {
         path: '/user',
-        component: WorkPlan,
+        component: ParentView,
         children:[
             {
                 path: '',
@@ -319,8 +385,25 @@ const routes = [
     }
 ]
 
-export default createRouter({
+
+const router = createRouter({
     history: createWebHistory(),
     routes
-
+    
 })
+
+router.beforeEach((to, from, next) => {
+    axios.get(window.location.origin + '/api/admin/me').then(response => {
+        if(response.data.type == "dpr"){
+            if(to.name=='404' || to.name=='Dashboard' || to.name=='ListNews' || to.name=='UpdateNews' || to.name=='CreateNews'){
+                next()
+            }else{
+                next({name:'404'})
+            }
+        }else{
+            next()
+        }
+    })
+})
+
+export default router

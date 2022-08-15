@@ -10,14 +10,11 @@
                     @csrf
                     <label class="m-account--title">Create new account</label>
                     <x-auth-validation-errors class="mb-4" :errors="$errors" />
-                    {{-- <div class="form-group">
-                        <div class="input-group d-flex">
-                            <div class="input-group-prepend d-flex">
-                                <i class="fas fa-user"></i>
-                            </div>
-                            <x-input type="text" name="username" placeholder="Username" autocomplete="off" required />
-                        </div>
-                    </div> --}}
+                    <div class="mt-4">
+                        <x-label for="name" :value="__('Name')" />
+
+                        <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required />
+                    </div>
                     <div class="mt-4">
                         <x-label for="username" :value="__('Username')" />
 
@@ -44,15 +41,12 @@
                     <input type="hidden" name="type" value="superadmin">
                     <input type="hidden" name="photo" value="NULL">
 
-
-                    <div class="flex items-center justify-end mt-4">
+                    <div class="m-account--actions">
                         <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
                             {{ __('Already registered?') }}
                         </a>
 
-                        <x-button class="ml-4 btn btn-rounded btn-info">
-                            {{ __('Register') }}
-                        </x-button>
+                        <button type="submit" class="btn btn-rounded btn-info">Register</button>
                     </div>
                 </form>
 

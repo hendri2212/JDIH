@@ -81,8 +81,10 @@ export default {
         const content = ref('')
         const id_user = ref('')
         const getDpr = async () => {
-            await axios.get(window.location.origin + '/api/legislator/member').then(response => {
-                dpr.value = response.data
+            await axios.get(window.location.origin + '/api/legislator/members').then(response => {
+                if(response.data != ""){
+                    dpr.value = response.data
+                }
             })
         }
 
@@ -98,7 +100,7 @@ export default {
                     title: 'Berhasil!',
                     text: response.data,
                 })
-            }).catch((response) => {
+            }).catch(({response}) => {
                 swal({
                     icon: 'error',
                     title: 'Gagal!',

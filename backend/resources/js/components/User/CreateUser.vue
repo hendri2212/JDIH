@@ -46,14 +46,6 @@
                             <small>*Min 8 Karakter</small>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <span class="label-text col-md-3 col-form-label">Jenis: *</span>
-
-                        <div class="col-md-9">
-                            <input type="radio" v-model="type" name="type" value="admin"> Admin
-                            <input type="radio" v-model="type" name="type" value="dpr"> DPR
-                        </div>
-                    </div>
                     <div class="form-group row" v-if="type == 'dpr'">
                         <span class="label-text col-md-3 col-form-label">Fraksi: *</span>
 
@@ -65,9 +57,16 @@
                     </div>
                     <div class="form-group row">
                         <span class="label-text col-md-3 col-form-label">Foto: *</span>
-
                         <div class="col-md-9">
-                            <input ref="photo" type="file" name="photo" class="form-control" >
+                            <file-upload ref="photo" @imageUploaded="imageUploaded"></file-upload>
+                            <div class="row mt-3" v-if="imageUrl != null">
+                                <div class="col-sm-12">
+                                    <div style="width:100%; aspect-ratio: auto 1/1;">
+                                        <span v-if="loadingCropper">Loading ...</span>
+                                        <cropper-custom ref="cropper" @ready="loadingCropper = false" :stencil_props="{ aspectRatio: 2/3 }" :image="imageUrl"></cropper-custom>
+                                    </div>
+                                </div>
+                            </div>
                             <small>*Anggota Dewan wajib mengisi foto untuk di tampilkan di halaman utama</small>
                         </div>
                     </div>
@@ -91,10 +90,14 @@ import PageHeader from '../PageHeader'
 import Panel from '../Panel'
 import axios from 'axios'
 axios.defaults.withCredentials = true;
+import FileUpload from '../Helper/FileUpload.vue'
+import CropperCustom from '../Helper/CropperCustom.vue';
 export default {
     components: {
         PageHeader,
-        Panel
+        Panel,
+        FileUpload,
+        CropperCustom,
     },
     setup() {
         const route = useRoute()
@@ -103,24 +106,51 @@ export default {
         const name = ref('')
         const username = ref('')
         const password = ref('')
-        const type = ref('admin')
+        const type = ref('dpr')
         const photo = ref(null)
+        const imageUrl = ref(null)
+        const cropper = ref(null)
+        const loadingCropper = ref(false)
         const fraction = ref([])
         const id_fraction = ref(null)
-        const getFraction = async () => {
-            await axios.get(window.location.origin + '/api/fractions').then(response => {
-                fraction.value = response.data
-            })
+        
+        const imageUploaded = (image) => {
+            imageUrl.value = image
+            loadingCropper.value = true
         }
+
+        const dataURLToBlob = (dataURL) => {
+            var BASE64_MARKER = ';base64,';
+            if (dataURL.indexOf(BASE64_MARKER) == -1) {
+                var parts = dataURL.split(',');
+                var contentType = parts[0].split(':')[1];
+                var raw = parts[1];
+
+                return new Blob([raw], {type: contentType});
+            }
+
+            var parts = dataURL.split(BASE64_MARKER);
+            var contentType = parts[0].split(':')[1];
+            var raw = window.atob(parts[1]);
+            var rawLength = raw.length;
+
+            var uInt8Array = new Uint8Array(rawLength);
+
+            for (var i = 0; i < rawLength; ++i) {
+                uInt8Array[i] = raw.charCodeAt(i);
+            }
+
+            return new Blob([uInt8Array], {type: contentType});
+        }
+        
         const createUser = async () => {
             let formData = new FormData
             formData.append('name', name.value)
             formData.append('username', username.value)
             formData.append('password', password.value)
             formData.append('type', type.value)
-            if(photo.value.files.length > 0){
-                formData.append('photo', photo.value.files[0])
-            }
+            let result = cropper.value.getResult()
+            formData.append('photo', dataURLToBlob(result.canvas.toDataURL()))
             if(type.value == 'dpr'){
                 formData.append('id_fraction', id_fraction.value)
             }
@@ -130,12 +160,18 @@ export default {
                     title: 'Berhasil!',
                     text: response.data,
                 })
-            }).catch((response) => {
+            }).catch(({response}) => {
                 swal({
                     icon: 'error',
                     title: 'Gagal!',
                     text: response.data,
                 })
+            })
+        }
+
+        const getFraction = async () => {
+            await axios.get(window.location.origin + '/api/fractions').then(response => {
+                fraction.value = response.data
             })
         }
 
@@ -148,6 +184,10 @@ export default {
             password,
             type,
             photo,
+            imageUrl,
+            imageUploaded,
+            cropper,
+            loadingCropper,
             fraction,
             id_fraction,
             createUser,

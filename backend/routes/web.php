@@ -18,6 +18,7 @@ Route::get('/login', [AuthenticationController::class, 'createLogin'])->name('lo
 Route::post('/login', [AuthenticationController::class, 'storeLogin'])->name('login.action');
 Route::get('/register', [AuthenticationController::class, 'createRegister'])->name('register');
 Route::post('/register', [AuthenticationController::class, 'storeRegister']);
+Route::post('/logout', [AuthenticationController::class, 'logout']);
 
 Route::get('/{any}', function () {
     return view('layout.app');

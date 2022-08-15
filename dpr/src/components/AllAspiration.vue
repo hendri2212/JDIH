@@ -1,64 +1,18 @@
 <template>
-    <!-- <main class="bg-white p-3 my-2"> -->
-    <!-- <main class="p-3 my-2"> -->
     <main class="my-2">
-        <!-- <div class="card rounded-3 bg-info mb-3 border-0 border-bottom rounded-0 pb-2"> -->
-        <div class="card p-3 rounded-3 mb-2 border-0 border-bottom rounded-0 pb-2">
+        <div v-for="(data, key) in aspiration" :key="'aspiration_'+data.id" class="card p-3 rounded-3 mb-2 border-0 border-bottom rounded-0 pb-2">
             <div class="row g-0">
-                <div class="col">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-                    </svg>
+                <div class="col-sm-9 d-flex flex-column">
+                    <h5 class="card-title mb-0">{{data.title}}</h5>
+                    <p class="card-text module line-clamp">{{removeHTML(data.description)}}</p>
                 </div>
-                <div class="col-8">
-                    <div class="card-body p-0">
-                        <h5 class="card-title mb-0">Card title</h5>
-                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                <div class="col-sm-3">
+                    <div class="image">
+                        <img class="rounded-end" style="width:100%; aspect-ratio: 1/1; object-fit: cover; object-position: center;" :src="URL_STORAGE+'/'+data.photo">
                     </div>
                 </div>
-                <div class="col-3">
-                    <img src="https://assets.pikiran-rakyat.com/crop/0x0:0x0/703x0/filters:watermark(file/2017/cms/img/watermark.png,-0,0,0)/photo/2019/12/29/1050433581.jpg" class="img-fluid rounded-end">
-                </div>
             </div>
-        </div>
-        <div class="card p-3 rounded-3 mb-2 border-0 border-bottom rounded-0 pb-2">
-            <div class="row g-0">
-                <div class="col">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-                    </svg>
-                </div>
-                <div class="col-8">
-                    <div class="card-body p-0">
-                        <h5 class="card-title mb-0">Card title</h5>
-                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                    </div>
-                </div>
-                <div class="col-3">
-                    <img src="https://assets.pikiran-rakyat.com/crop/0x0:0x0/703x0/filters:watermark(file/2017/cms/img/watermark.png,-0,0,0)/photo/2019/12/29/1050433581.jpg" class="img-fluid rounded-end">
-                </div>
-            </div>
-        </div>
-        <div class="card p-3 rounded-3 mb-2 border-0 border-bottom rounded-0 pb-2">
-            <div class="row g-0">
-                <div class="col">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-                    </svg>
-                </div>
-                <div class="col-8">
-                    <div class="card-body p-0">
-                        <h5 class="card-title mb-0">Card title</h5>
-                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                    </div>
-                </div>
-                <div class="col-3">
-                    <img src="https://assets.pikiran-rakyat.com/crop/0x0:0x0/703x0/filters:watermark(file/2017/cms/img/watermark.png,-0,0,0)/photo/2019/12/29/1050433581.jpg" class="img-fluid rounded-end">
-                </div>
-            </div>
+            <div id="pointer" v-if="key == aspiration.length-1"></div>
         </div>
         <nav class="navbar px-3 bg-white fixed-bottom shadow-lg justify-content-end" style="max-width: 460px; margin: 0 auto">
             <router-link :to="{ name:'report' }" class="btn btn-primary">
@@ -70,3 +24,65 @@
         </nav>
     </main>
 </template>
+<script>
+    import axios from 'axios'
+    export default {
+        name: "AllAspiration",
+        data(){
+            return {
+                URL_STORAGE:import.meta.env.VITE_URL_STORAGE,
+                aspiration:[],
+                next:`${import.meta.env.VITE_URL_API}/aspirations`,
+                busy:false
+            }
+        },
+        created(){
+            this.$watch(
+                () => this.$route.params,
+                () => {
+                    this.getAspiration()
+                    window.addEventListener('scroll', this.handleScroll);
+                },
+                // fetch the data when the view is created and the data is
+                // already being observed
+                { immediate: true }
+            )
+        },
+        destroyed () {
+            window.removeEventListener('scroll', this.handleScroll);
+        },
+        methods:{
+            getAspiration(){
+                if(this.next && !this.busy){
+                    this.busy = true
+                    axios.get(this.next).then(response => {
+                        this.next = response.data.links.next
+                        response.data.data.forEach(p => {
+                            this.aspiration.push(p)
+                            this.busy = false
+                        })
+                    })
+                }
+            },
+            handleScroll (event) {
+                if(document.getElementById("pointer")){
+                    const {
+                        scrollTop,
+                        clientHeight,
+                    } = document.documentElement;
+                    let scrollPos = Math.floor(scrollTop+clientHeight)
+                    let pointer = Math.floor(document.getElementById("pointer").getBoundingClientRect().top + window.scrollY)
+                    if(scrollPos >= pointer-5){
+                        // document.getElementById("pointer").remove()
+                        this.getAspiration()
+                    }
+                }
+            },
+            removeHTML(str){ 
+                var tmp = document.createElement("DIV");
+                tmp.innerHTML = str;
+                return tmp.textContent || tmp.innerText || "";
+            }
+        }
+    }
+</script>

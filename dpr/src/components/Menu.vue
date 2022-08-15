@@ -13,25 +13,25 @@
                     <span class="text-white fw-bold small">JDIH</span>
                 </div>
             </a>
-            <router-link :to="{ name: 'news' }" class="col-4 p-1 mb-2 align-middle text-center text-decoration-none" style="height: 65px">
+            <a href="#anggota" class="col-4 p-1 mb-2 align-middle text-center text-decoration-none" style="height: 65px">
                 <div class="rounded-3 p-1" style="background-color: #4BA3DE">
                     <img src="@/assets/team.png" class="img-fluid rounded-3"><br>
                     <span class="text-white fw-bold small">Anggota DPRD</span>
                 </div>
-            </router-link>
-            <router-link :to="{ name: 'news' }" class="col-4 p-1 mb-2 align-middle text-center text-decoration-none" style="height: 65px">
+            </a>
+            <router-link :to="'/'" class="col-4 p-1 mb-2 align-middle text-center text-decoration-none" style="height: 65px">
                 <div class="rounded-3 p-1" style="background-color: #1870AB">
                     <img src="@/assets/link.png" class="img-fluid rounded-3"><br>
                     <span class="text-white fw-bold small">Link Terkait</span>
                 </div>
             </router-link>
-            <router-link :to="{ name: 'news' }" class="col-4 p-1 mb-2 align-middle text-center text-decoration-none" style="height: 65px">
+            <a href="#news" class="col-4 p-1 mb-2 align-middle text-center text-decoration-none" style="height: 65px">
                 <div class="rounded-3 p-1" style="background-color: #F28C3D">
                     <img src="@/assets/news.png" class="img-fluid rounded-3"><br>
                     <span class="text-white fw-bold small">News</span>
                 </div>
-            </router-link>
-            <router-link :to="{ name: 'news' }" class="col-4 p-1 mb-2 align-middle text-center text-decoration-none" style="height: 65px">
+            </a>
+            <router-link :to="'/'" class="col-4 p-1 mb-2 align-middle text-center text-decoration-none" style="height: 65px">
                 <div class="rounded-3 p-1" style="background-color: #DC1641">
                     <img src="@/assets/tukarjual.png" class="img-fluid rounded-3" style="width: 32px"><br>
                     <span class="text-white fw-bold small">TukarJual</span>
@@ -58,7 +58,7 @@
             }
         },
         created(){
-            axios.get("http://127.0.0.1:8000/api/related-links").then(response => {
+            axios.get(`${import.meta.env.VITE_URL_API}/related-links`).then(response => {
                 this.related_links = response.data
             })
         }

@@ -26,7 +26,7 @@
                 <div class="title">
                     <h6 class="h6">Detail Program Kerja</h6>
 
-                    <!-- <a href="#" class="btn btn-rounded btn-danger">Hapus Program Kerja</a> -->
+                    <span class="btn btn-rounded btn-danger" @click="showModalDelete(route.params.id)">Hapus Program Kerja</span>
                 </div>
                 <form @submit.prevent="updateWorkPlan">
                     <div class="form-group row">
@@ -67,7 +67,7 @@
 
 <script>
 import { ref, inject } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import PageHeader from '../PageHeader'
 import Panel from '../Panel'
 import axios from 'axios'
@@ -79,6 +79,7 @@ export default {
     },
     setup() {
         const route = useRoute()
+        const router = useRouter()
         const swal = inject('$swal')
         const breadcrumb = route.meta.breadcrumb
         const dpr = ref([])
@@ -93,7 +94,7 @@ export default {
             })
         }
         const getDpr = async () => {
-            await axios.get(window.location.origin + '/api/legislator/member').then(response => {
+            await axios.get(window.location.origin + '/api/legislator/members').then(response => {
                 dpr.value = response.data
             })
         }
@@ -109,7 +110,7 @@ export default {
                     title: 'Berhasil!',
                     text: response.data,
                 })
-            }).catch((response) => {
+            }).catch(({response}) => {
                 swal({
                     icon: 'error',
                     title: 'Gagal!',
@@ -117,16 +118,42 @@ export default {
                 })
             })
         }   
+
+        const showModalDelete = async (id) => {
+            await swal({
+                title: 'Apa anda yakin?',
+                text: 'Data ini akan dihapus secara permanen!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: "Yakin!",
+                cancelButtonText: "Batal",
+            }).then(({isConfirmed}) => {
+                if (isConfirmed) {
+                    axios.delete(window.location.origin + `/api/admin/work-plan/${id}`).then(response => {
+                        swal({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: response.data,
+                        }).then(() => {
+                            router.push({name:'ListWorkPlan'})
+                        })
+                    })
+                }
+            });
+        }
+
         getDpr()
         getWorkPlan()
 
         return {
             breadcrumb,
+            route,
             dpr,
             title,
             content,
             id_user,
-            updateWorkPlan
+            updateWorkPlan,
+            showModalDelete
         }
     },
 }

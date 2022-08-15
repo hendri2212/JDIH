@@ -35,7 +35,15 @@
                         <span class="label-text col-md-3 col-form-label">Lambang Fraksi: *</span>
 
                         <div class="col-md-9">
-                            <input ref="photo" type="file" name="photo" class="form-control" required>
+                            <file-upload ref="photo" @imageUploaded="imageUploaded"></file-upload>
+                            <div class="row mt-3" v-if="imageUrl != null">
+                                <div class="col-sm-12">
+                                    <div style="width:100%; aspect-ratio: auto 1/1;">
+                                        <span v-if="loadingCropper">Loading ...</span>
+                                        <cropper-custom ref="cropper" @ready="loadingCropper = false" :stencil_props="{ aspectRatio: 1/1 }" :image="imageUrl"></cropper-custom>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -58,10 +66,14 @@ import PageHeader from '../PageHeader'
 import Panel from '../Panel'
 import axios from 'axios'
 axios.defaults.withCredentials = true;
+import FileUpload from '../Helper/FileUpload.vue'
+import CropperCustom from '../Helper/CropperCustom.vue';
 export default {
     components: {
         PageHeader,
-        Panel
+        Panel,
+        FileUpload,
+        CropperCustom
     },
     setup() {
         const route = useRoute()
@@ -70,22 +82,64 @@ export default {
 
         const name = ref('')
         const photo = ref(null)
+        const imageUrl = ref(null)
+        const cropper = ref(null)
+        const loadingCropper = ref(false)
+
+        const imageUploaded = (image) => {
+            imageUrl.value = image
+            loadingCropper.value = true
+        }
+
+        const dataURLToBlob = (dataURL) => {
+            var BASE64_MARKER = ';base64,';
+            if (dataURL.indexOf(BASE64_MARKER) == -1) {
+                var parts = dataURL.split(',');
+                var contentType = parts[0].split(':')[1];
+                var raw = parts[1];
+
+                return new Blob([raw], {type: contentType});
+            }
+
+            var parts = dataURL.split(BASE64_MARKER);
+            var contentType = parts[0].split(':')[1];
+            var raw = window.atob(parts[1]);
+            var rawLength = raw.length;
+
+            var uInt8Array = new Uint8Array(rawLength);
+
+            for (var i = 0; i < rawLength; ++i) {
+                uInt8Array[i] = raw.charCodeAt(i);
+            }
+
+            return new Blob([uInt8Array], {type: contentType});
+        }
 
         const createFraksi = async () => {
             let formData =  new FormData()
             formData.append('name', name.value)
-            formData.append('photo', photo.value.files[0])
+            let result = cropper.value.getResult()
+            formData.append('photo', dataURLToBlob(result.canvas.toDataURL()))
+            formData.append('coordinates', JSON.stringify(result.coordinates))
             axios.post(window.location.origin + '/api/admin/fraction/create', formData).then(response => {
                 swal({
                     icon: 'success',
                     title: 'Berhasil!',
                     text: response.data,
+                }).then(({isConfirmed}) => {
+                    if(isConfirmed){
+                        window.location.reload()
+                    }
                 })
-            }).catch((response) => {
+            }).catch(({response}) => {
                 swal({
                     icon: 'error',
                     title: 'Gagal!',
                     text: response.data,
+                }).then(({isConfirmed}) => {
+                    if(isConfirmed){
+                        window.location.reload()
+                    }
                 })
             })
         }
@@ -94,6 +148,10 @@ export default {
             breadcrumb,
             name,
             photo,
+            imageUrl,
+            imageUploaded,
+            cropper,
+            loadingCropper,
             createFraksi
         }
     },

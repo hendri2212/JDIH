@@ -33,7 +33,9 @@
                     </div>
 
                     <div class="m-account--actions">
-                        <a href="#" class="btn-link">Forgot Password?</a>
+                        <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('register') }}">
+                            {{ __('Not already registered?') }}
+                        </a>
 
                         <button type="submit" class="btn btn-rounded btn-info">Login</button>
                     </div>

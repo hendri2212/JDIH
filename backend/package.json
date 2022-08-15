@@ -13,6 +13,8 @@
         "@popperjs/core": "^2.10.2",
         "axios": "^0.21.4",
         "bootstrap": "^5.2.0-beta1",
+        "browser-sync": "^2.27.10",
+        "browser-sync-webpack-plugin": "^2.3.0",
         "jquery-ui": "^1.13.1",
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
@@ -28,6 +30,7 @@
         "@ckeditor/ckeditor5-vue": "^4.0.1",
         "@jobinsjp/vue3-datatable": "^1.0.15",
         "@yaireo/tagify": "^4.12.0",
+        "vue-advanced-cropper": "^2.8.3",
         "vue-loader": "^17.0.0",
         "vue-router": "^4.0.13",
         "vue-sweetalert2": "^5.0.5"

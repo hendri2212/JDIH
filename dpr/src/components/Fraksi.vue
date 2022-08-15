@@ -3,7 +3,7 @@
         <h5 class="border-start border-5 border-warning px-2">Fraksi</h5>
         <div class="d-flex flex-wrap text-center">
             <div v-for="data in fractions" :key="'fraction_'+data.id_fraction" class="col-3 p-1 border border-end-0 border-bottom-0">
-                <img :src="'http://127.0.0.1:8000/storage/'+data.photo" class="img-fluid" style="height: 90px">
+                <img :src="URL_STORAGE+'/'+data.photo" class="img-fluid" style="height: 90px">
             </div>
         </div>
     </main>
@@ -14,11 +14,12 @@
         name: "Fraksi",
         data(){
             return {
+                URL_STORAGE:import.meta.env.VITE_URL_STORAGE,
                 fractions:[]
             }
         },
         created(){
-            axios.get("http://127.0.0.1:8000/api/fractions").then(response => {
+            axios.get(`${import.meta.env.VITE_URL_API}/fractions`).then(response => {
                 this.fractions = response.data
             })
         }

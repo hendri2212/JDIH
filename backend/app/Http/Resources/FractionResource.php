@@ -18,6 +18,7 @@ class FractionResource extends JsonResource
             'id' => $this->id_fraction,
             'name' => $this->name,
             'photo' => $this->photo,
+            'coordinates' => $this->coordinates,
         ];
     }
 }

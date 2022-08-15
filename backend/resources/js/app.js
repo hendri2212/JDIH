@@ -6,10 +6,9 @@
 
 require('./bootstrap');
 require('./select2.min');
-    import $ from 'jquery';
+import $ from 'jquery';
 window.$ = window.jQuery = $;
 import jQuery from 'jquery'
-require('./main');
 import { createApp } from "vue";
 import router from './router'
 
@@ -23,6 +22,11 @@ import Layout from './views/Layout'
 createApp({
     components:{
         Layout
+    },
+    mounted(){
+        let Script = document.createElement("script");
+        Script.setAttribute("src", 'http://127.0.0.1:8000/js/main.js');
+        document.head.appendChild(Script);
     }
 })
 .use(router)

@@ -8,6 +8,7 @@ use App\Http\Requests\UserRequest;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class AuthenticationController extends Controller
 {
@@ -35,6 +36,17 @@ class AuthenticationController extends Controller
         $user->save();
         Auth::login($user);
         return redirect(RouteServiceProvider::HOME);
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+ 
+        request()->session()->invalidate();
+ 
+        request()->session()->regenerateToken();
+ 
+        return redirect('/login');
     }
 
 

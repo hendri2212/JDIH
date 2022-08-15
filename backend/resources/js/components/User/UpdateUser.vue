@@ -21,7 +21,7 @@
                 <div class="title">
                     <h6 class="h6">Detail User</h6>
 
-                    <!-- <a href="#" class="btn btn-rounded btn-danger">Hapus User</a> -->
+                    <span class="btn btn-rounded btn-danger" @click="showModalDelete(route.params.id)">Hapus User</span>
                 </div>
                 <form @submit.prevent="updateUser">
                     <div class="form-group row">
@@ -42,17 +42,9 @@
                         <span class="label-text col-md-3 col-form-label">Password: *</span>
 
                         <div class="col-md-9">
-                            <input type="password" name="password" class="form-control" v-model="password" required>
+                            <input type="password" name="password" class="form-control" v-model="password">
                             <small>*Biarkan kosong jika tidak ingin merubah password</small>
                             <small>*Min 8 Karakter</small>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <span class="label-text col-md-3 col-form-label">Jenis: *</span>
-
-                        <div class="col-md-9">
-                            <input type="radio" v-model="type" name="type" value="admin"> Admin
-                            <input type="radio" v-model="type" name="type" value="dpr"> DPR
                         </div>
                     </div>
                     <div class="form-group row" v-if="type == 'dpr'">
@@ -66,9 +58,16 @@
                     </div>
                     <div class="form-group row">
                         <span class="label-text col-md-3 col-form-label">Foto: *</span>
-
                         <div class="col-md-9">
-                            <input ref="photo" type="file" name="photo" class="form-control">
+                            <file-upload ref="photo" @imageUploaded="imageUploaded"></file-upload>
+                            <div class="row mt-3" v-if="imageUrl != null">
+                                <div class="col-sm-12">
+                                    <div style="width:100%; aspect-ratio: auto 1/1;">
+                                        <span v-if="loadingCropper">Loading ...</span>
+                                        <cropper-custom :default_size="defaultSize" ref="cropper" @ready="loadingCropper = false" :stencil_props="{ aspectRatio: 2/3 }" :image="imageUrl"></cropper-custom>
+                                    </div>
+                                </div>
+                            </div>
                             <small>*Anggota Dewan wajib mengisi foto untuk di tampilkan di halaman utama</small>
                         </div>
                     </div>
@@ -76,7 +75,7 @@
                     <div class="row mt-3">
                         <div class="col-md-9 offset-md-3">
                             <!-- <span class="px-3 text-primary" style="cursor: pointer;">Simpan Draft</span> -->
-                            <input type="submit" value="Tambah User" class="btn btn-rounded btn-success">
+                            <input type="submit" value="Update User" class="btn btn-rounded btn-success">
                         </div>
                     </div>
                 </form>
@@ -87,38 +86,91 @@
 
 <script>
 import { ref, inject } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import PageHeader from '../PageHeader'
 import Panel from '../Panel'
 import axios from 'axios'
 axios.defaults.withCredentials = true;
+import FileUpload from '../Helper/FileUpload.vue'
+import CropperCustom from '../Helper/CropperCustom.vue';
 export default {
     components: {
         PageHeader,
-        Panel
+        Panel,
+        FileUpload,
+        CropperCustom,
     },
     setup() {
         const route = useRoute()
+        const router = useRouter()
         const swal = inject('$swal')
+        const loading = ref(false)
         const breadcrumb = route.meta.breadcrumb
         const name = ref('')
         const username = ref('')
         const password = ref('')
-        const type = ref('admin')
+        const type = ref('dpr')
         const photo = ref(null)
+        const imageUrl = ref(null)
+        const cropper = ref(null)
+        const loadingCropper = ref(false)
         const fraction = ref([])
         const id_fraction = ref(null)
-        const getFraction = async () => {
-            await axios.get(window.location.origin + '/api/fractions').then(response => {
-                fraction.value = response.data
+
+        const imageUploaded = (image) => {
+            imageUrl.value = image
+            loadingCropper.value = true
+        }
+
+        const dataURLToBlob = (dataURL) => {
+            var BASE64_MARKER = ';base64,';
+            if (dataURL.indexOf(BASE64_MARKER) == -1) {
+                var parts = dataURL.split(',');
+                var contentType = parts[0].split(':')[1];
+                var raw = parts[1];
+
+                return new Blob([raw], {type: contentType});
+            }
+
+            var parts = dataURL.split(BASE64_MARKER);
+            var contentType = parts[0].split(':')[1];
+            var raw = window.atob(parts[1]);
+            var rawLength = raw.length;
+
+            var uInt8Array = new Uint8Array(rawLength);
+
+            for (var i = 0; i < rawLength; ++i) {
+                uInt8Array[i] = raw.charCodeAt(i);
+            }
+
+            return new Blob([uInt8Array], {type: contentType});
+        }
+
+        function getBase64Image(url) {
+            return new Promise((resolve, reject) => {
+                var canvas = document.createElement("canvas");
+                var ctx = canvas.getContext('2d');
+                var img = new Image;
+                img.onload = function(){
+                    canvas.width = img.width
+                    canvas.height = img.height
+                    ctx.drawImage(img,0,0);
+                    resolve(canvas.toDataURL())
+                };
+                img.src = url;
             })
         }
+
         const getUser = async () => {
             await axios.get(window.location.origin + `/api/admin/user/${route.params.id}`).then(response => {
-                name.value = response.data.data.name
-                username.value = response.data.data.username
-                type.value = response.data.data.type
-                id_fraction.value = response.data.data.fraction ? response.data.data.fraction.id : null
+                getBase64Image('http://127.0.0.1:8000/storage/'+response.data.data.photo).then(image => {
+                    loading.value = false
+                    name.value = response.data.data.name
+                    username.value = response.data.data.username
+                    type.value = response.data.data.type
+                    id_fraction.value = response.data.data.fraction ? response.data.data.fraction.id : null
+                    imageUrl.value = image
+                })
             })
         }
         const updateUser = async () => {
@@ -127,19 +179,18 @@ export default {
             formData.append('username', username.value)
             formData.append('password', password.value)
             formData.append('type', type.value)
-            if(photo.value.files){
-                formData.append('photo', photo.value.files[0])
-            }
+            let result = cropper.value.getResult()
+            formData.append('photo', dataURLToBlob(result.canvas.toDataURL()))
             if(type.value == 'dpr'){
                 formData.append('id_fraction', id_fraction.value)
             }
-            axios.post(window.location.origin + '/api/admin/user/update', formData).then(response => {
+            axios.post(`${window.location.origin}/api/admin/user/${route.params.id}`, formData).then(response => {
                 swal({
                     icon: 'success',
                     title: 'Berhasil!',
                     text: response.data,
                 })
-            }).catch((response) => {
+            }).catch(({response}) => {
                 swal({
                     icon: 'error',
                     title: 'Gagal!',
@@ -148,18 +199,65 @@ export default {
             })
         }
 
+        const showModalDelete = async (id) => {
+            await swal({
+                title: 'Apa anda yakin?',
+                text: 'Data ini akan dihapus secara permanen!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: "Yakin!",
+                cancelButtonText: "Batal",
+            }).then(({isConfirmed}) => {
+                if (isConfirmed) {
+                    axios.delete(window.location.origin + `/api/admin/user/${id}`).then(response => {
+                        router.push({
+                            name:"ListUser"
+                        })
+                    }).catch(({response}) => {
+                        swal({
+                            icon: 'error',
+                            title: 'Gagal!',
+                            text: response.data,
+                        })
+                    })
+                }
+            });
+        }
+
+        const getFraction = async () => {
+            await axios.get(window.location.origin + '/api/fractions').then(response => {
+                fraction.value = response.data
+            })
+        }
+
         getFraction()
+
         getUser()
+
+        const defaultSize = ({ imageSize, visibleArea }) => {
+			return {
+				width: (visibleArea || imageSize).width,
+				height: (visibleArea || imageSize).height,
+			};
+		}
         return {
             breadcrumb,
+            route,
+            loading,
             name,
             username,
             password,
             type,
             photo,
+            imageUrl,
+            imageUploaded,
+            cropper,
+            loadingCropper,
             fraction,
             id_fraction,
             updateUser,
+            showModalDelete,
+            defaultSize,
         }
     },
 }

@@ -7,8 +7,10 @@ use App\Http\Requests\FractionRequest;
 use App\Http\Resources\FractionCollection;
 use App\Http\Resources\FractionResource;
 use App\Models\Fraction;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class FractionController extends Controller
 {
@@ -47,6 +49,7 @@ class FractionController extends Controller
         $fraction->name = $request->name;
         $path = $request->file('photo')->store('fractions', 'public');
         $fraction->photo = $path;
+        $fraction->coordinates = $request->coordinates;
         $fraction->save();
         return response()->json("Fraksi berhasil ditambahkan", 201);
     }
@@ -83,8 +86,10 @@ class FractionController extends Controller
             $fraction->name = $request->name;
         }
         if($request->has('photo')){
+            Storage::disk('public')->delete($fraction->photo);
             $path = $request->file('photo')->store('fractions', 'public');
             $fraction->photo = $path;
+            $fraction->coordinates = $request->coordinates;
         }
         $fraction->save();
         return response()->json("Fraksi berhasil diupdate", 200);
@@ -100,7 +105,12 @@ class FractionController extends Controller
     {
         $fraction = Fraction::find($id);
         if($fraction != null){
+            $user = User::where('id_fraction', $id)->first();
+            if($user){
+                return response()->json("Gagal menghapus, karena ada user yang masih tersimpan sebagai anggota dari fraksi ini!", 500);
+            }
             $fraction->delete();
+            Storage::disk('public')->delete($fraction->photo);
         }
         return response()->json("Fraksi berhasil dihapus", 200);
     }

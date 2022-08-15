@@ -14,28 +14,15 @@ use App\Http\Controllers\admin\TagController as AdminTagController;
 use App\Http\Controllers\WorkPlanController;
 use App\Http\Controllers\admin\WorkPlanController as AdminWorkPlanController;
 use App\Http\Controllers\admin\UserController as AdminUserController;
+use App\Http\Controllers\AspirationController;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
-
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
-
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
 
 Route::post('auth/login', [AuthenticationController::class, 'login']);
 Route::post('auth/register', [AuthenticationController::class, 'register']);
 
 // Route::apiResource('news', NewsController::class);
+Route::get('related-news/{slug}', [NewsController::class, 'related']);
 Route::prefix('news')->group(function($route){
     $route->get('', [NewsController::class, 'all']);
     $route->get('newest', [NewsController::class, 'newest']);
@@ -45,6 +32,10 @@ Route::get('related-links', [RelatedLinkController::class, 'active']);
 Route::get('legislator/members', [LegislatorController::class, 'member']);
 Route::get('fractions', [FractionController::class, 'fractions']);
 Route::get('work-plans', [WorkPlanController::class, 'index']);
+// Route::middleware('api')->prefix('aspirations')->group(function($route){
+    Route::get('aspirations', [AspirationController::class, 'index']);
+    Route::post('aspirations', [AspirationController::class, 'store']);
+// });
 
 Route::prefix('admin')->middleware('auth:sanctum')->group(function(){
     Route::get('me', function(){
@@ -54,28 +45,33 @@ Route::prefix('admin')->middleware('auth:sanctum')->group(function(){
         $route->get('', [AdminUserController::class, 'index']);
         $route->get('{id}', [AdminUserController::class, 'show']);
         $route->post('create', [AdminUserController::class, 'createNewUser']);
-        // $route->post('{id}', [AdminNewsController::class, 'update']);
+        $route->post('{id}', [AdminUserController::class, 'update']);
+        $route->delete('{id}', [AdminUserController::class, 'destroy']);
     });
     Route::prefix('tags')->group(function($route){
         $route->get('', [AdminTagController::class, 'index']);
-        // $route->get('{id}', [AdminNewsController::class, 'show']);
-        // $route->post('create', [AdminNewsController::class, 'store']);
-        // $route->post('{id}', [AdminNewsController::class, 'update']);
+        $route->get('{id}', [AdminTagController::class, 'show']);
+        $route->post('create', [AdminTagController::class, 'store']);
+        Route::middleware('isSuperAdmin')->group(function($route){
+            $route->post('{id}', [AdminTagController::class, 'update']);
+            $route->delete('{id}', [AdminTagController::class, 'destroy']);
+        });
     });
     Route::prefix('news')->group(function($route){
         $route->get('', [AdminNewsController::class, 'index']);
         $route->get('{id}', [AdminNewsController::class, 'show']);
         $route->post('create', [AdminNewsController::class, 'store']);
         $route->post('{id}', [AdminNewsController::class, 'update']);
+        $route->delete('{id}', [AdminNewsController::class, 'destroy']);
     });
-    Route::prefix('related-link')->group(function($route){
+    Route::prefix('related-link')->middleware('isSuperAdmin')->group(function($route){
         $route->get('', [AdminRelatedLinkController::class, 'index']);
         $route->get('{id}', [AdminRelatedLinkController::class, 'show']);
         $route->post('create', [AdminRelatedLinkController::class, 'store']);
         $route->post('{id}', [AdminRelatedLinkController::class, 'update']);
         $route->delete('{id}', [AdminRelatedLinkController::class, 'destroy']);
     });
-    Route::prefix('fraction')->group(function($route){
+    Route::prefix('fraction')->middleware('isSuperAdmin')->group(function($route){
         $route->get('', [AdminFractionController::class, 'index']);
         $route->get('{id}', [AdminFractionController::class, 'show']);
         $route->post('create', [AdminFractionController::class, 'store']);

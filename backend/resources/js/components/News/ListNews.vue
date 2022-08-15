@@ -58,7 +58,7 @@
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                             <li><router-link class="dropdown-item" :to="{name:'UpdateNews', params:{id:row.id}}">Edit</router-link></li>
-                            <li><a class="dropdown-item" href="#">Delete</a></li>
+                            <li><span class="dropdown-item" @click="showModalDelete(row.id)">Delete</span></li>
                         </ul>
                         </div>
                     </table-body>
@@ -73,7 +73,7 @@
     </section>
 </template>
 <script>
-import { ref, computed } from 'vue'
+import { ref, computed, inject } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
 axios.defaults.withCredentials = true;
@@ -92,6 +92,7 @@ export default {
     },
     setup() {
         const route = useRoute()
+        const swal = inject('$swal')
         const breadcrumb = route.meta.breadcrumb
         const loading = ref(true)
         const news = ref([])
@@ -118,6 +119,31 @@ export default {
             
         }
 
+        const showModalDelete = async (id) => {
+            await swal({
+                title: 'Apa anda yakin?',
+                text: 'Data ini akan dihapus secara permanen!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: "Yakin!",
+                cancelButtonText: "Batal",
+            }).then(({isConfirmed}) => {
+                if (isConfirmed) {
+                    axios.delete(window.location.origin + `/api/admin/news/${id}`).then(response => {
+                        let index = news.value.findIndex(p => {
+                            return p.id == id
+                        })
+                        news.value.splice(index, 1)
+                        swal({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: response.data,
+                        })
+                    })
+                }
+            });
+        }
+
         return {
             breadcrumb,
             loading,
@@ -125,7 +151,8 @@ export default {
             countNews,
             pagination,
             query,
-            getNews
+            getNews,
+            showModalDelete
         }
 
     },

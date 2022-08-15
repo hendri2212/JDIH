@@ -88,7 +88,7 @@ class WorkPlanController extends Controller
         $work_plan->content = $request->content;
         $work_plan->id_user = $request->id_user;
         $work_plan->save();
-        return response()->json('Sukses menambah program kerja', 201);
+        return response()->json('Sukses mengubah program kerja', 201);
     }
 
     /**

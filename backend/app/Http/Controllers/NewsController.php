@@ -10,7 +10,21 @@ use App\Models\News;
 class NewsController extends Controller
 {
     public function all(){
-        $news = News::with('tags')->where('is_published', true)->orderBy('created_at', 'desc')->paginate();
+        $news = News::with('tags')->where('is_published', true)->orderBy('created_at', 'desc')->paginate(5);
+        return new NewsCollection($news);
+    }
+
+    public function related($slug){
+        $post = News::where([
+            'is_published' => true,
+            'slug' => $slug
+        ])->first();
+        if(!$post){
+            return response()->json("News not found!", 404);
+        }
+        $news = News::where('is_published', true)->where('slug', '!=', $slug)->whereHas('tags', function($q) use ($post) {
+            return $q->whereIn('title', $post->tags->pluck('title')); 
+        })->orderBy('created_at', 'desc')->paginate(5);
         return new NewsCollection($news);
     }
 
@@ -26,6 +40,10 @@ class NewsController extends Controller
             'is_published' => true,
             'slug' => $slug
         ])->first();
-        return new NewsResource($news);
+        if($news){
+            return new NewsResource($news);
+        }else{
+            return response()->json("News not found!", 404);
+        }
     }
 }

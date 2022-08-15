@@ -82,7 +82,7 @@ export default {
                     title: 'Berhasil!',
                     text: response.data,
                 })
-            }).catch((response) => {
+            }).catch(({response}) => {
                 swal({
                     icon: 'error',
                     title: 'Gagal!',
