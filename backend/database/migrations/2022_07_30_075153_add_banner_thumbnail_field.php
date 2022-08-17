@@ -17,7 +17,7 @@ class AddBannerThumbnailField extends Migration
             $table->string('banner')->after('photo');
             $table->string('thumbnail')->after('banner');
             $table->string('bannerCoordinates')->after('thumbnail');
-            $table->string('thumbnailCoordinates')->after('bannerCoordinate');
+            $table->string('thumbnailCoordinates')->after('bannerCoordinates');
         });
 
     }
