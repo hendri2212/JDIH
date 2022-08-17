@@ -9,7 +9,7 @@ import "https://owlcarousel2.github.io/OwlCarousel2/assets/owlcarousel/owl.carou
 
 <template>
     <main>
-        <Header v-if="this.$route.name!='report'" />
+        <Header v-if="$route.name!='report'" />
         <HeaderBack v-else />
         <RouterView />
     </main>
