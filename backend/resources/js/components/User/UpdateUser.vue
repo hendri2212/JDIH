@@ -163,7 +163,7 @@ export default {
 
         const getUser = async () => {
             await axios.get(window.location.origin + `/api/admin/user/${route.params.id}`).then(response => {
-                getBase64Image('http://127.0.0.1:8000/storage/'+response.data.data.photo).then(image => {
+                getBase64Image(`${window.location.origin}/storage/${response.data.data.photo}`).then(image => {
                     loading.value = false
                     name.value = response.data.data.name
                     username.value = response.data.data.username

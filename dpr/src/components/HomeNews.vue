@@ -8,12 +8,8 @@
             </router-link>
         </div>
         <div v-else class="placeholder-glow d-flex overflow-hidden">
-            <div>
-                <div class="placeholder bg-secondary rounded-1" style="width:270px; height:135px;"></div>
-                <h6 class="mt-2 placeholder bg-secondary d-block col-3 rounded-1"></h6>
-            </div>
-            <div class="ms-2">
-                <div class="placeholder bg-secondary rounded-1" style="width:270px; height:135px;"></div>
+            <div v-for="n in 2" :key="'placeholder'+n" :class="n!=0 ? 'ms-2' : ''">
+                <div class="placeholder bg-secondary rounded-1" style="width:270px; aspect-ratio: 3/2;"></div>
                 <h6 class="mt-2 placeholder bg-secondary d-block col-3 rounded-1"></h6>
             </div>
         </div>
@@ -30,16 +26,16 @@
                 news:[]
             }
         },
-        created(){
+        async created(){
             this.loading = true
-            axios.get(`${import.meta.env.VITE_URL_API}/news/newest`).then(response => {
+            await axios.get(`${import.meta.env.VITE_URL_API}/news/newest`).then(response => {
                 this.news = response.data.data
                 $(document).ready(function(){
                     $(".owl-carousel-news").owlCarousel({
                         margin      : 10,
                         loop        : true,
                         autoWidth   : true,
-                        items       : 3
+                        items       : response.data.data.length
                     })
                 });
                 this.loading = false

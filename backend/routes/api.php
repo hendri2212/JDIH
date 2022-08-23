@@ -18,8 +18,8 @@ use App\Http\Controllers\AspirationController;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
 
-Route::post('auth/login', [AuthenticationController::class, 'login']);
-Route::post('auth/register', [AuthenticationController::class, 'register']);
+// Route::post('auth/login', [AuthenticationController::class, 'login']);
+// Route::post('auth/register', [AuthenticationController::class, 'register']);
 
 // Route::apiResource('news', NewsController::class);
 Route::get('related-news/{slug}', [NewsController::class, 'related']);

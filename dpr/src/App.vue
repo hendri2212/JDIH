@@ -23,4 +23,8 @@ import "https://owlcarousel2.github.io/OwlCarousel2/assets/owlcarousel/owl.carou
     max-width: 460px;
     margin: 0 auto;
 }
+
+h5 {
+    font-weight: 700 !important;
+}
 </style>

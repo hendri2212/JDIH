@@ -56,7 +56,7 @@ export default {
                     canvas.width = width;
                     canvas.height = height;
                     canvas.getContext('2d').drawImage(img, 0, 0, width, height);
-                    var dataUrl = canvas.toDataURL('image/jpeg');
+                    var dataUrl = canvas.toDataURL('image/png');
                     imageUrl.value = dataUrl
                     imageResizingLoading.value = false
                     emit('imageUploaded', imageUrl.value);

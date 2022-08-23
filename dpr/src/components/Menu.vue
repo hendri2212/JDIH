@@ -9,7 +9,7 @@
             </router-link>
             <a href="http://jdih.kotabarukab.go.id/data/www/index.php" target="_blank" class="col-4 p-1 mb-2 align-middle text-center text-decoration-none" style="height: 65px">
                 <div class="rounded-3 p-1" style="background-color: #36B6B6">
-                    <img src="https://jdih.kuduskab.go.id/assets/uploads/icon/jdihn.png" class="img-fluid rounded-3" style="width: 32px"><br>
+                    <img src="@/assets/jdih.png" class="img-fluid rounded-3" style="width: 32px"><br>
                     <span class="text-white fw-bold small">JDIH</span>
                 </div>
             </a>
@@ -31,12 +31,12 @@
                     <span class="text-white fw-bold small">News</span>
                 </div>
             </a>
-            <router-link :to="'/'" class="col-4 p-1 mb-2 align-middle text-center text-decoration-none" style="height: 65px">
+            <!-- <router-link :to="'/'" class="col-4 p-1 mb-2 align-middle text-center text-decoration-none" style="height: 65px">
                 <div class="rounded-3 p-1" style="background-color: #DC1641">
                     <img src="@/assets/tukarjual.png" class="img-fluid rounded-3" style="width: 32px"><br>
                     <span class="text-white fw-bold small">TukarJual</span>
                 </div>
-            </router-link>
+            </router-link> -->
         </div>
     </main>
 </template>
@@ -58,17 +58,9 @@
             }
         },
         created(){
-            axios.get(`${import.meta.env.VITE_URL_API}/related-links`).then(response => {
-                this.related_links = response.data
-            })
+            // axios.get(`${import.meta.env.VITE_URL_API}/related-links`).then(response => {
+            //     this.related_links = response.data
+            // })
         }
     }
 </script>
-<!-- <div class="d-flex flex-wrap justify-content-between">
-            <div v-for="(data, i) in related_links" :key="'related_link' + i" class="col-4 p-1">
-                <div :style="'background-color:' + colors[i] + '; min-height: 54px; height:54px;'">
-                    <a :href="data.link" class="w-100 h-100 d-flex justify-content-center align-items-center text-white text-decoration-none text-center">
-                        {{data.title}}
-                    </a>
-                </div>
-            </div> -->

@@ -3,18 +3,30 @@
         <h5 class="border-start border-5 border-warning px-2">Semua Berita</h5>
         <router-link v-for="(data, key) in news" :key="'news_'+data.id" :to="{ name: 'news', params:{slug:data.slug} }" class="card mb-3 border-0 border-bottom rounded-0 pb-2 text-decoration-none text-black">
             <div class="row g-0">
-                <div class="col-sm-3" style="padding-right: 16px;">
+                <div class="col-3" style="padding-right: 16px;">
                     <div class="image">
                         <img style="width:100%; aspect-ratio: 1/1; border-radius: 7px;" :src="URL_STORAGE+'/'+data.thumbnail" >
                     </div>
                 </div>
-                <div class="col-sm-9 d-flex flex-column">
-                    <h5 class="card-title mb-0">{{data.title}}</h5>
-                    <p class="card-text module line-clamp">{{removeHTML(data.content)}}</p>
+                <div class="col-9 d-flex flex-column">
+                    <h6 class="card-title mb-0">{{data.title}}</h6>
+                    <!-- <p class="card-text module line-clamp">{{removeHTML(data.content)}}</p> -->
                 </div>
             </div>
             <div id="pointer" v-if="key == news.length-1"></div> 
         </router-link>
+        <div v-if="busy" v-for="n in 3" :key="'news_placeholder_'+n" class="card mb-3 border-0 border-bottom rounded-0 pb-2 text-decoration-none text-black placeholder-glow">
+            <div class="row">
+                <div class="col-3" style="padding-right: 16px;">
+                    <span class="placeholder placeholder-lg bg-secondary" style="width:100%; aspect-ratio: 1/1; border-radius: 7px;"></span>
+                </div>
+                <div class="col-9 d-flex flex-column">
+                    <h6 class="card-title mb-0 placeholder bg-secondary mb-3"></h6>
+                    <h6 class="card-title mb-0 placeholder bg-secondary mb-3"></h6>
+                    <h6 class="card-title mb-0 placeholder bg-secondary"></h6>
+                </div>
+            </div>
+        </div>
     </main>
 </template>
 <script>
@@ -52,8 +64,8 @@
                         this.next = response.data.links.next
                         response.data.data.forEach(p => {
                             this.news.push(p)
-                            this.busy = false
                         })
+                        this.busy = false
                     })
                 }
             },

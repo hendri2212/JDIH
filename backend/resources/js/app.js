@@ -25,7 +25,7 @@ createApp({
     },
     mounted(){
         let Script = document.createElement("script");
-        Script.setAttribute("src", 'http://127.0.0.1:8000/js/main.js');
+        Script.setAttribute("src", `${window.location.origin}/js/main.js`);
         document.head.appendChild(Script);
     }
 })

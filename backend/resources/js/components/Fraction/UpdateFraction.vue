@@ -140,7 +140,7 @@ export default {
 
         const getFraction = async () => {
             await axios.get(window.location.origin + '/api/admin/fraction/'+ route.params.id).then(response => {
-                getBase64Image('http://127.0.0.1:8000/storage/'+response.data.photo).then(image => {
+                getBase64Image(`${window.location.origin}/storage/${response.data.photo}`).then(image => {
                     loading.value = false
                     name.value = response.data.name
                     imageUrl.value = image

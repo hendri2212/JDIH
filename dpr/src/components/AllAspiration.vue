@@ -3,7 +3,7 @@
         <div v-for="(data, key) in aspiration" :key="'aspiration_'+data.id" class="card p-3 rounded-3 mb-2 border-0 border-bottom rounded-0 pb-2">
             <div class="row g-0">
                 <div class="col-sm-9 d-flex flex-column">
-                    <h5 class="card-title mb-0">{{data.title}}</h5>
+                    <h6 class="card-title mb-0">{{data.title}}</h6>
                     <p class="card-text module line-clamp">{{removeHTML(data.description)}}</p>
                 </div>
                 <div class="col-sm-3">

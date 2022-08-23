@@ -174,7 +174,7 @@ export default {
         const getNews = async () => {
             loading.value = true
             await axios.get(window.location.origin + '/api/admin/news/'+ route.params.id).then(response => {
-                getBase64Image('http://127.0.0.1:8000/storage/'+response.data.photo).then(image => {
+                getBase64Image(`${window.location.origin}/storage/${response.data.photo}`).then(image => {
                     loading.value = false
                     title.value = response.data.title
                     content.value = response.data.content
