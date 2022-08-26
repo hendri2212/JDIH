@@ -7,7 +7,8 @@
                     <span class="text-white fw-bold small">Aspirasi</span>
                 </div>
             </router-link>
-            <a href="http://jdih.kotabarukab.go.id/data/www/index.php" target="_blank" class="col-4 p-1 mb-2 align-middle text-center text-decoration-none" style="height: 65px">
+            <!-- <a href="http://jdih.kotabarukab.go.id/data/www/index.php" target="_blank" class="col-4 p-1 mb-2 align-middle text-center text-decoration-none" style="height: 65px"> -->
+            <a href="http://jdih-dprd.kotabarukab.go.id" target="_blank" class="col-4 p-1 mb-2 align-middle text-center text-decoration-none" style="height: 65px">
                 <div class="rounded-3 p-1" style="background-color: #36B6B6">
                     <img src="@/assets/jdih.png" class="img-fluid rounded-3" style="width: 32px"><br>
                     <span class="text-white fw-bold small">JDIH</span>
@@ -19,12 +20,12 @@
                     <span class="text-white fw-bold small">Anggota DPRD</span>
                 </div>
             </a>
-            <router-link :to="'/'" class="col-4 p-1 mb-2 align-middle text-center text-decoration-none" style="height: 65px">
+            <!-- <router-link :to="'/'" class="col-4 p-1 mb-2 align-middle text-center text-decoration-none" style="height: 65px">
                 <div class="rounded-3 p-1" style="background-color: #1870AB">
                     <img src="@/assets/link.png" class="img-fluid rounded-3"><br>
                     <span class="text-white fw-bold small">Link Terkait</span>
                 </div>
-            </router-link>
+            </router-link> -->
             <a href="#news" class="col-4 p-1 mb-2 align-middle text-center text-decoration-none" style="height: 65px">
                 <div class="rounded-3 p-1" style="background-color: #F28C3D">
                     <img src="@/assets/news.png" class="img-fluid rounded-3"><br>

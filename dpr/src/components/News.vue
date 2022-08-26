@@ -1,9 +1,9 @@
 <template>
-    <main class="bg-white p-3 my-2" v-if="news">
+    <main class="bg-white p-3 my-2 text-dark" v-if="news">
         <h5 class="mb-0">{{news.title}}</h5>
         <p class="muted fw-lighter">{{news.author.name}} | {{((new Date(news.created_at).getMonth() > 8) ? (new Date(news.created_at).getMonth() + 1) : ('0' + (new Date(news.created_at).getMonth() + 1))) + '/' + ((new Date(news.created_at).getDate() > 9) ? new Date(news.created_at).getDate() : ('0' + new Date(news.created_at).getDate())) + '/' + new Date(news.created_at).getFullYear()}}</p>
         <img :src="URL_STORAGE+'/'+news.photo" style="border-radius:7px;" class="img-fluid">
-        <div class="mt-2 lh-base content" v-html="news.content">
+        <div class="mt-2 lh-base content" style="overflow-wrap: break-word" v-html="news.content">
 
         </div>
     </main>

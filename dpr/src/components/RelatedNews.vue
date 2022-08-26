@@ -1,6 +1,6 @@
 <template>
     <main class="bg-white p-3 my-2" id="news">
-        <h5 class="border-start border-5 border-warning px-2">Berita Terkait</h5>
+        <h5 class="border-start border-5 border-warning px-2 text-dark">Berita Terkait</h5>
         <router-link v-for="(data, key) in news" :key="'news_'+data.id" :to="{ name: 'news', params:{slug:data.slug} }" class="card mb-3 border-0 border-bottom rounded-0 pb-2 text-decoration-none text-black">
             <div class="row g-0">
                 <div class="col-3" style="padding-right: 16px;">

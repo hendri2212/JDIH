@@ -1,23 +1,23 @@
 <template>
     <main class="bg-white p-3 my-2">
         <div class="mb-3">
-            <label for="nama" class="form-label">Nama</label>
+            <label for="nama" class="form-label text-dark">Nama</label>
             <input type="text" class="form-control" id="nama" v-model="name">
         </div>
         <div class="mb-3">
-            <label for="alamat" class="form-label">Alamat</label>
+            <label for="alamat" class="form-label text-dark">Alamat</label>
             <input type="text" class="form-control" id="alamat" v-model="address">
         </div>
         <div class="mb-3">
-            <label for="title" class="form-label">Judul Aspirasi</label>
+            <label for="title" class="form-label text-dark">Judul Aspirasi</label>
             <input type="text" class="form-control" id="title" v-model="title">
         </div>
         <div class="mb-3">
-            <label for="information" class="form-label">Keterangan</label>
+            <label for="information" class="form-label text-dark">Keterangan</label>
             <textarea class="form-control" id="information" rows="3" v-model="description"></textarea>
         </div>
         <div class="mb-3">
-            <label for="formFile" class="form-label">Gambar</label>
+            <label for="formFile" class="form-label text-dark">Gambar</label>
             <input ref="photo" class="form-control" type="file" id="formFile">
         </div>
         

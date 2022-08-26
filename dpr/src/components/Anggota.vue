@@ -4,7 +4,7 @@
                     <img :src="'import.meta\u200b.env.VITE_URL_STORAGE'+'/'+data.photo" style="min-height:183px; height:183px;">
                 </div> -->
     <main class="p-3 my-2" id="anggota">
-        <h5 class="border-start border-5 border-warning px-2">Anggota DPR</h5>
+        <h5 class="border-start border-5 border-warning px-2 text-dark">Anggota DPR</h5>
         <div v-if="member_of_legislators.length > 0" class="owl-carousel owl-carousel-legislator">
             <div v-for="(data, i) in member_of_legislators" :key="'carousel-legislator-'+data.id" style="width: 170px">
                 <img :src="URL_STORAGE+'/'+data.photo" class="rounded-3">

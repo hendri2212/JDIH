@@ -1,12 +1,12 @@
 <template>
     <main class="my-2">
         <div v-for="(data, key) in aspiration" :key="'aspiration_'+data.id" class="card p-3 rounded-3 mb-2 border-0 border-bottom rounded-0 pb-2">
-            <div class="row g-0">
-                <div class="col-sm-9 d-flex flex-column">
+            <div class="row g-0 text-dark">
+                <div class="col-9 d-flex flex-column">
                     <h6 class="card-title mb-0">{{data.title}}</h6>
                     <p class="card-text module line-clamp">{{removeHTML(data.description)}}</p>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-3">
                     <div class="image">
                         <img class="rounded-end" style="width:100%; aspect-ratio: 1/1; object-fit: cover; object-position: center;" :src="URL_STORAGE+'/'+data.photo">
                     </div>

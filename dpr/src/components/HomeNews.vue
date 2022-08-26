@@ -1,6 +1,6 @@
 <template>
     <main class="bg-white p-3 my-2">
-        <h5 class="border-start border-5 border-warning px-2">Berita Terbaru</h5>
+        <h5 class="border-start border-5 border-warning px-2 text-dark">Berita Terbaru</h5>
         <div v-if="!loading" class="owl-carousel owl-carousel-news">
             <router-link v-for="(data, i) in news" :key="'carousel-news-'+data.id" :to="{ name: 'news', params:{slug:data.slug} }" class="text-decoration-none text-dark text-wrap" style="width: 270px">
                 <img :src="URL_STORAGE+'/'+data.banner" class="rounded-3" style="max-width: 270px">

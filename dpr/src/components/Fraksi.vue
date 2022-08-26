@@ -1,6 +1,6 @@
 <template>
     <main class="bg-white p-3 my-2">
-        <h5 class="border-start border-5 border-warning px-2">Fraksi</h5>
+        <h5 class="border-start border-5 border-warning px-2 text-dark">Fraksi</h5>
         <div class="d-flex flex-wrap text-center">
             <div v-if="!loading" v-for="data in fractions" :key="'fraction_'+data.id_fraction" class="col-3 p-1 border border-end-0 border-bottom-0">
                 <img :src="URL_STORAGE+'/'+data.photo" class="img-fluid w-100" style="aspect-ratio: 1;">

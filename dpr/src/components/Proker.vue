@@ -1,6 +1,6 @@
 <template>
     <main class="bg-white p-3 my-2">
-        <h5 class="border-start border-5 border-warning px-2">Program Kerja</h5>
+        <h5 class="border-start border-5 border-warning px-2 text-dark">Program Kerja</h5>
         <ul v-if="!loading" class="list-group">
             <li v-for="data in work_plans" :key="'work_plan_'+data.id_work_plan" class="list-group-item border-0 border-bottom"># {{data.title}}</li>
         </ul>
