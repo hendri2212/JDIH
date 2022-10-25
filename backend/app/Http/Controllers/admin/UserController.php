@@ -44,7 +44,7 @@ class UserController extends Controller
             $user->name = $request->name;
             $user->username = $request->username;
             if(trim($request->password) != ""){
-                $user->password = Hash::make($request->password);
+                $user->password = $request->password;
             }
             $user->type = $request->type;
             if($request->type == 'dpr'){
@@ -72,7 +72,7 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::find($id);
-        if(!$user){
+        if(!$user || $id == auth()->id()){
             return response()->json('User tidak ditemukan', 404);
         }
         $user->delete();
