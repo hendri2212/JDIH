@@ -382,13 +382,12 @@ Author URI  : https://themeforest.net/user/themelooks
          * ------------------------------------------------------------------------- */
         var $sidebarNav = $('.sidebar--nav');
 
-        $.each( $sidebarNav.find('li'), function () {
+        $('.sidebar--nav li').each(function() {
             var $li = $(this);
-
-            if ( $li.children('a').length && $li.children('ul').length ) {
+            if ($li.children('a').length && $li.children('ul').length) {
                 $li.addClass('is-dropdown');
             }
-        });
+        });        
 
         $sidebarNav.on('click', '.is-dropdown > a', function (e) {
             e.preventDefault();
