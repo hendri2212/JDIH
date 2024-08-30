@@ -24,9 +24,11 @@ createApp({
         Layout
     },
     mounted(){
-        let Script = document.createElement("script");
-        Script.setAttribute("src", `${window.location.origin}/js/main.js`);
-        document.head.appendChild(Script);
+        setTimeout(() => {
+            let Script = document.createElement("script");
+            Script.setAttribute("src", `${window.location.origin}/js/main.js`);
+            document.head.appendChild(Script);
+        }, 300); // Delay of 100ms
     }
 })
 .use(router)
