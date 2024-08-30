@@ -356,7 +356,7 @@ Author URI  : https://themeforest.net/user/themelooks
 
 
     var $sidebarNav = $('.sidebar--nav');
-    $.each($sidebarNav.find('li'), function () {
+    $('.sidebar--nav li').each(function () {
       var $li = $(this);
 
       if ($li.children('a').length && $li.children('ul').length) {
